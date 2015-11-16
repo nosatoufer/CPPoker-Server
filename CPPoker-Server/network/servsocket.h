@@ -4,17 +4,20 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QDebug>
+#include <QMap>
 
+#include "player.h"
 
-class servSocket : public QObject
+class ServSocket : public QObject
 {
     Q_OBJECT
 private:
     QTcpServer * m_serv;
     QTcpSocket * m_sock;
+    QMap<QString, Player *> m_Player;
 
 public:
-    explicit servSocket(QObject *parent = 0);
+    explicit ServSocket(QObject *parent = 0);
 public slots:
     void newConnection();
 };

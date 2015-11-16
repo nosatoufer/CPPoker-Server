@@ -1,6 +1,7 @@
 #include "servsocket.h"
+#include "connectionmanager.h"
 
-servSocket::servSocket(QObject *parent) :
+ServSocket::ServSocket(QObject *parent) :
     QObject(parent)
 {
     m_serv = new QTcpServer();
@@ -13,19 +14,10 @@ servSocket::servSocket(QObject *parent) :
     else
         qDebug() << "Server could not start";
 
-
-
 }
 
-void servSocket::newConnection()
+void ServSocket::newConnection()
 {
-    QByteArray s = "Hello";
-    qDebug() << "New Connection !";
-    m_sock = m_serv->nextPendingConnection();
-    m_sock->write(s);
-    m_sock->flush();
-
-    m_sock->waitForBytesWritten(3000);
-    m_sock->close();
+    new connectionManager(m_serv->nextPendingConnection(), &m_Player);
 }
 
