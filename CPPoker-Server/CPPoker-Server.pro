@@ -1,7 +1,16 @@
-TEMPLATE = app
-CONFIG += console c++11
-CONFIG -= app_bundle
-CONFIG -= qt
+QT       += core gui
+QT       += network
 
-SOURCES += main.cpp
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = CPPoker-Serveur
+TEMPLATE = app
+
+QMAKE_CXXFLAGS += -std=c++11
+
+SOURCES += main.cpp \
+    servsocket.cpp
+
+HEADERS += \
+    servsocket.h
 
