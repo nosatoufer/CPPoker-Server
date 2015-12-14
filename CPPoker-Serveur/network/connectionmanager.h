@@ -1,7 +1,7 @@
 #ifndef CONNEXIONMANAGER_H
 #define CONNEXIONMANAGER_H
 
-#include <QTcpSocket>
+/*#include <QTcpSocket>
 #include <QMap>
 
 #include "player.h"
@@ -16,6 +16,6 @@ public:
     connectionManager(QTcpSocket * newClient, QMap<QString, Player *> *players);
 public slots:
     void read();
-};
+};*/
 
 #endif // CONNEXIONMANAGER_H

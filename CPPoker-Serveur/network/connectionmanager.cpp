@@ -1,4 +1,4 @@
-#include "connectionmanager.h"
+/*#include "connectionmanager.h"
 
 connectionManager::connectionManager(QTcpSocket *newClient, QMap<QString, Player *> *players) :
     m_newClient(newClient),
@@ -14,5 +14,5 @@ void connectionManager::read() // A changer pour la sérialisation
     {
         m_players->insert(name, new Player(m_newClient, &name));
     }
-}
+}*/
 

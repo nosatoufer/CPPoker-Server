@@ -1,7 +1,7 @@
 #include "servsocket.h"
 #include "connectionmanager.h"
 
-ServSocket::ServSocket(QObject *parent) :
+/*ServSocket::ServSocket(QObject *parent) :
     QObject(parent)
 {
     m_serv = new QTcpServer();
@@ -19,5 +19,5 @@ ServSocket::ServSocket(QObject *parent) :
 void ServSocket::newConnection()
 {
     new connectionManager(m_serv->nextPendingConnection(), &m_Player);
-}
+}*/
 

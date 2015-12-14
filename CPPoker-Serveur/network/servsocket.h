@@ -1,7 +1,7 @@
 #ifndef SERVSOCKET_H
 #define SERVSOCKET_H
 
-#include <QTcpServer>
+/*#include <QTcpServer>
 #include <QTcpSocket>
 #include <QDebug>
 #include <QMap>
@@ -20,6 +20,6 @@ public:
     explicit ServSocket(QObject *parent = 0);
 public slots:
     void newConnection();
-};
+};*/
 
 #endif // SERVSOCKET_H

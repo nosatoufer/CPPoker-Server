@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <QTcpSocket>
+/*#include <QTcpSocket>
 
 class Player
 {
@@ -11,6 +11,6 @@ private:
     int m_stack;
 public:
     Player(QTcpSocket * socket, QString * name);
-};
+};*/
 
 #endif // PLAYER_H
