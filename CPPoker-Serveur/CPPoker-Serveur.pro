@@ -11,18 +11,36 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = CPPoker-Serveur
 TEMPLATE = app
 
+QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp\
     model/player.cpp \
     network/connectionmanager.cpp \
     network/servsocket.cpp \
-    view/pokerserveurgui.cpp
+    view/pokerservergui.cpp \
+    model/room.cpp \
+    model/pokerroom.cpp \
+    model/pokergame.cpp \
+    model/game.cpp \
+    model/roomexception.cpp \
+    model/deck.cpp \
+    model/card.cpp \
+    model/gameexception.cpp
 
 HEADERS += \
     model/player.h \
     network/connectionmanager.h \
     network/servsocket.h \
-    view/pokerserveurgui.h
+    view/pokerservergui.h \
+    model/room.h \
+    model/pokerroom.h \
+    model/card.h \
+    model/pokergame.h \
+    model/game.h \
+    model/roomexception.h \
+    model/deck.h \
+    model/gameexception.h \
+    model/gamestate.h
 
 FORMS += \
-    view/pokerserveurgui.ui
+    view/pokerservergui.ui

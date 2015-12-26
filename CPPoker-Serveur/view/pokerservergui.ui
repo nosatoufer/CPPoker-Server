@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PokerServeurGui</class>
- <widget class="QMainWindow" name="PokerServeurGui">
+ <class>PokerServerGui</class>
+ <widget class="QMainWindow" name="PokerServerGui">
   <property name="enabled">
    <bool>true</bool>
   </property>
@@ -63,7 +63,7 @@
      <x>0</x>
      <y>0</y>
      <width>401</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">

@@ -1,10 +1,10 @@
-#include "pokerserveurgui.h"
-#include "ui_pokerserveurgui.h"
+#include "pokerservergui.h"
+#include "ui_pokerservergui.h"
 #include <QMessageBox>
 
-PokerServeurGui::PokerServeurGui(QWidget *parent) :
+PokerServerGui::PokerServerGui(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::PokerServeurGui)
+    ui(new Ui::PokerServerGui)
 {
     ui->setupUi(this);
 
@@ -12,16 +12,16 @@ PokerServeurGui::PokerServeurGui(QWidget *parent) :
     setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
 
     //Connexion des boutons aux slots
-    connect(ui->actionQuitter, &QAction::triggered, this, &PokerServeurGui::slotQuitter);
+    connect(ui->actionQuitter, &QAction::triggered, this, &PokerServerGui::slotQuitter);
     connect(ui->buttonSend, SIGNAL(clicked()), this, SLOT(slotExecuter()));
 }
 
-PokerServeurGui::~PokerServeurGui()
+PokerServerGui::~PokerServerGui()
 {
     delete ui;
 }
 
-void PokerServeurGui::slotQuitter()
+void PokerServerGui::slotQuitter()
 {
     QMessageBox::StandardButton reply = QMessageBox::question(this, "Quitter ?", "Voulez-vous vraiment arrêter le serveur ?", QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes)
@@ -30,7 +30,7 @@ void PokerServeurGui::slotQuitter()
     }
 }
 
-void PokerServeurGui::slotExecuter()
+void PokerServerGui::slotExecuter()
 {    
     if(ui->commandLine->text() == ""){
         QMessageBox::warning(this, "Champ vide !", "Le champ de commande est vide !");

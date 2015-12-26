@@ -1,10 +1,10 @@
-#include "pokerserveurgui.h"
+#include "view/pokerservergui.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    PokerServeurGui w;
+    PokerServerGui w;
     w.show();
 
     return a.exec();

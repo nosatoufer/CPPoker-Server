@@ -4,19 +4,19 @@
 #include <QMainWindow>
 
 namespace Ui {
-class PokerServeurGui;
+class PokerServerGui;
 }
 
-class PokerServeurGui : public QMainWindow
+class PokerServerGui : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit PokerServeurGui(QWidget *parent = 0);
-    ~PokerServeurGui();
+    explicit PokerServerGui(QWidget *parent = 0);
+    ~PokerServerGui();
 
 private:
-    Ui::PokerServeurGui *ui;
+    Ui::PokerServerGui *ui;
 
 private slots:
     void slotQuitter();
