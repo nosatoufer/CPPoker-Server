@@ -773,7 +773,8 @@ pokerservergui.o: view/pokerservergui.cpp view/pokerservergui.h \
 room.o: model/room.cpp model/room.h \
 		model/player.h \
 		model/game.h \
-		model/gamestate.h
+		model/gamestate.h \
+		model/gameexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o room.o model/room.cpp
 
 pokerroom.o: model/pokerroom.cpp model/pokerroom.h \
@@ -781,9 +782,9 @@ pokerroom.o: model/pokerroom.cpp model/pokerroom.h \
 		model/player.h \
 		model/game.h \
 		model/gamestate.h \
+		model/gameexception.h \
 		model/pokergame.h \
 		model/card.h \
-		model/gameexception.h \
 		model/deck.h \
 		model/roomexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokerroom.o model/pokerroom.cpp
@@ -793,15 +794,16 @@ pokergame.o: model/pokergame.cpp model/pokergame.h \
 		model/player.h \
 		model/room.h \
 		model/gamestate.h \
-		model/card.h \
 		model/gameexception.h \
+		model/card.h \
 		model/deck.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokergame.o model/pokergame.cpp
 
 game.o: model/game.cpp model/game.h \
 		model/player.h \
 		model/room.h \
-		model/gamestate.h
+		model/gamestate.h \
+		model/gameexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o game.o model/game.cpp
 
 roomexception.o: model/roomexception.cpp model/roomexception.h
