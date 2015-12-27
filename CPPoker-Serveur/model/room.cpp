@@ -1,6 +1,11 @@
 #include "room.h"
 
-Room::Room(unsigned int minPlayer, unsigned int maxPlayer) : minPlayer(minPlayer), maxPlayer(maxPlayer), players(std::vector<Player*>()) {}
+Room::Room(unsigned int minPlayer, unsigned int maxPlayer, std::string name, std::vector<Player*> players) :
+    minPlayer(minPlayer),
+    maxPlayer(maxPlayer),
+    name(name),
+    players(players)
+{}
 
 void Room::addPlayer(Player* player) {
     players.push_back(player);

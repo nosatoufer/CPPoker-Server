@@ -16,18 +16,24 @@ protected:
 
     Room* room;
 
-    int currentPlayer;
-
     GameState gameState;
 
+    unsigned int currentPlayer;
+
 public:
-    Game();
-    Game(std::vector<Player*> players);
-    Game(std::vector<Player*> players, Room* room);
+    Game(std::vector<Player*> players = std::vector<Player*>(), Room* room = nullptr);
 
     virtual void startGame() = 0;
 
-    virtual int nextPlayer();
+    virtual void nextPlayer();
+    virtual unsigned int getPreviousPlayerId();
+
+    virtual void setCurrentPlayerId(unsigned int number);
+
+    virtual Player* getCurrentPlayer();
+    virtual unsigned int getCurrentPlayerId();
+
+    virtual GameState getGameState();
 };
 
 #endif // GAME_H

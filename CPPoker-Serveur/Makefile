@@ -57,7 +57,10 @@ SOURCES       = main.cpp \
 		model/roomexception.cpp \
 		model/deck.cpp \
 		model/card.cpp \
-		model/gameexception.cpp moc_pokerservergui.cpp
+		model/gameexception.cpp \
+		model/cardplayer.cpp \
+		model/pokerplayer.cpp \
+		model/playerexception.cpp moc_pokerservergui.cpp
 OBJECTS       = main.o \
 		player.o \
 		connectionmanager.o \
@@ -71,6 +74,9 @@ OBJECTS       = main.o \
 		deck.o \
 		card.o \
 		gameexception.o \
+		cardplayer.o \
+		pokerplayer.o \
+		playerexception.o \
 		moc_pokerservergui.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
@@ -363,7 +369,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/CPPoker-Serveur1.0.0 || mkdir -p .tmp/CPPoker-Serveur1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents model/player.h network/connectionmanager.h network/servsocket.h view/pokerservergui.h model/room.h model/pokerroom.h model/card.h model/pokergame.h model/game.h model/roomexception.h model/deck.h model/gameexception.h model/gamestate.h .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents main.cpp model/player.cpp network/connectionmanager.cpp network/servsocket.cpp view/pokerservergui.cpp model/room.cpp model/pokerroom.cpp model/pokergame.cpp model/game.cpp model/roomexception.cpp model/deck.cpp model/card.cpp model/gameexception.cpp .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents view/pokerservergui.ui .tmp/CPPoker-Serveur1.0.0/ && (cd `dirname .tmp/CPPoker-Serveur1.0.0` && $(TAR) CPPoker-Serveur1.0.0.tar CPPoker-Serveur1.0.0 && $(COMPRESS) CPPoker-Serveur1.0.0.tar) && $(MOVE) `dirname .tmp/CPPoker-Serveur1.0.0`/CPPoker-Serveur1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/CPPoker-Serveur1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents model/player.h network/connectionmanager.h network/servsocket.h view/pokerservergui.h model/room.h model/pokerroom.h model/card.h model/pokergame.h model/game.h model/roomexception.h model/deck.h model/gameexception.h model/gamestate.h model/cardplayer.h model/pokerplayer.h model/playerexception.h .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents main.cpp model/player.cpp network/connectionmanager.cpp network/servsocket.cpp view/pokerservergui.cpp model/room.cpp model/pokerroom.cpp model/pokergame.cpp model/game.cpp model/roomexception.cpp model/deck.cpp model/card.cpp model/gameexception.cpp model/cardplayer.cpp model/pokerplayer.cpp model/playerexception.cpp .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents view/pokerservergui.ui .tmp/CPPoker-Serveur1.0.0/ && (cd `dirname .tmp/CPPoker-Serveur1.0.0` && $(TAR) CPPoker-Serveur1.0.0.tar CPPoker-Serveur1.0.0 && $(COMPRESS) CPPoker-Serveur1.0.0.tar) && $(MOVE) `dirname .tmp/CPPoker-Serveur1.0.0`/CPPoker-Serveur1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/CPPoker-Serveur1.0.0
 
 
 clean:compiler_clean 
@@ -639,10 +645,22 @@ main.o: main.cpp view/pokerservergui.h \
 		/usr/include/qt5/QtCore/qeventloop.h \
 		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
 		/usr/include/qt5/QtGui/qguiapplication.h \
-		/usr/include/qt5/QtGui/qinputmethod.h
+		/usr/include/qt5/QtGui/qinputmethod.h \
+		model/player.h \
+		model/playerexception.h \
+		model/pokerroom.h \
+		model/room.h \
+		model/game.h \
+		model/gamestate.h \
+		model/gameexception.h \
+		model/pokergame.h \
+		model/card.h \
+		model/deck.h \
+		model/roomexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
-player.o: model/player.cpp model/player.h
+player.o: model/player.cpp model/player.h \
+		model/playerexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o player.o model/player.cpp
 
 connectionmanager.o: network/connectionmanager.cpp 
@@ -765,6 +783,53 @@ pokerservergui.o: view/pokerservergui.cpp view/pokerservergui.h \
 		/usr/include/qt5/QtWidgets/qtabwidget.h \
 		/usr/include/qt5/QtGui/qicon.h \
 		ui_pokerservergui.h \
+		/usr/include/qt5/QtCore/QVariant \
+		/usr/include/qt5/QtWidgets/QAction \
+		/usr/include/qt5/QtWidgets/qaction.h \
+		/usr/include/qt5/QtWidgets/qactiongroup.h \
+		/usr/include/qt5/QtWidgets/QApplication \
+		/usr/include/qt5/QtWidgets/qapplication.h \
+		/usr/include/qt5/QtCore/qcoreapplication.h \
+		/usr/include/qt5/QtCore/qeventloop.h \
+		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		/usr/include/qt5/QtGui/qguiapplication.h \
+		/usr/include/qt5/QtGui/qinputmethod.h \
+		/usr/include/qt5/QtWidgets/QButtonGroup \
+		/usr/include/qt5/QtWidgets/qbuttongroup.h \
+		/usr/include/qt5/QtWidgets/QHeaderView \
+		/usr/include/qt5/QtWidgets/qheaderview.h \
+		/usr/include/qt5/QtWidgets/qabstractitemview.h \
+		/usr/include/qt5/QtWidgets/qabstractscrollarea.h \
+		/usr/include/qt5/QtWidgets/qframe.h \
+		/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		/usr/include/qt5/QtCore/qitemselectionmodel.h \
+		/usr/include/qt5/QtWidgets/qabstractitemdelegate.h \
+		/usr/include/qt5/QtWidgets/qstyleoption.h \
+		/usr/include/qt5/QtWidgets/qabstractspinbox.h \
+		/usr/include/qt5/QtGui/qvalidator.h \
+		/usr/include/qt5/QtCore/qregularexpression.h \
+		/usr/include/qt5/QtWidgets/qslider.h \
+		/usr/include/qt5/QtWidgets/qabstractslider.h \
+		/usr/include/qt5/QtWidgets/qstyle.h \
+		/usr/include/qt5/QtWidgets/qtabbar.h \
+		/usr/include/qt5/QtWidgets/qrubberband.h \
+		/usr/include/qt5/QtWidgets/QLineEdit \
+		/usr/include/qt5/QtWidgets/qlineedit.h \
+		/usr/include/qt5/QtGui/qtextcursor.h \
+		/usr/include/qt5/QtGui/qtextformat.h \
+		/usr/include/qt5/QtGui/qpen.h \
+		/usr/include/qt5/QtGui/qtextoption.h \
+		/usr/include/qt5/QtWidgets/QMenu \
+		/usr/include/qt5/QtWidgets/qmenu.h \
+		/usr/include/qt5/QtWidgets/QMenuBar \
+		/usr/include/qt5/QtWidgets/qmenubar.h \
+		/usr/include/qt5/QtWidgets/QPushButton \
+		/usr/include/qt5/QtWidgets/qpushbutton.h \
+		/usr/include/qt5/QtWidgets/qabstractbutton.h \
+		/usr/include/qt5/QtWidgets/QTextEdit \
+		/usr/include/qt5/QtWidgets/qtextedit.h \
+		/usr/include/qt5/QtGui/qtextdocument.h \
+		/usr/include/qt5/QtWidgets/QWidget \
 		/usr/include/qt5/QtWidgets/QMessageBox \
 		/usr/include/qt5/QtWidgets/qmessagebox.h \
 		/usr/include/qt5/QtWidgets/qdialog.h
@@ -772,6 +837,7 @@ pokerservergui.o: view/pokerservergui.cpp view/pokerservergui.h \
 
 room.o: model/room.cpp model/room.h \
 		model/player.h \
+		model/playerexception.h \
 		model/game.h \
 		model/gamestate.h \
 		model/gameexception.h
@@ -780,6 +846,7 @@ room.o: model/room.cpp model/room.h \
 pokerroom.o: model/pokerroom.cpp model/pokerroom.h \
 		model/room.h \
 		model/player.h \
+		model/playerexception.h \
 		model/game.h \
 		model/gamestate.h \
 		model/gameexception.h \
@@ -792,6 +859,7 @@ pokerroom.o: model/pokerroom.cpp model/pokerroom.h \
 pokergame.o: model/pokergame.cpp model/pokergame.h \
 		model/game.h \
 		model/player.h \
+		model/playerexception.h \
 		model/room.h \
 		model/gamestate.h \
 		model/gameexception.h \
@@ -801,6 +869,7 @@ pokergame.o: model/pokergame.cpp model/pokergame.h \
 
 game.o: model/game.cpp model/game.h \
 		model/player.h \
+		model/playerexception.h \
 		model/room.h \
 		model/gamestate.h \
 		model/gameexception.h
@@ -818,6 +887,22 @@ card.o: model/card.cpp model/card.h
 
 gameexception.o: model/gameexception.cpp model/gameexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gameexception.o model/gameexception.cpp
+
+cardplayer.o: model/cardplayer.cpp model/cardplayer.h \
+		model/player.h \
+		model/playerexception.h \
+		model/card.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cardplayer.o model/cardplayer.cpp
+
+pokerplayer.o: model/pokerplayer.cpp model/pokerplayer.h \
+		model/cardplayer.h \
+		model/player.h \
+		model/playerexception.h \
+		model/card.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokerplayer.o model/pokerplayer.cpp
+
+playerexception.o: model/playerexception.cpp model/playerexception.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playerexception.o model/playerexception.cpp
 
 moc_pokerservergui.o: moc_pokerservergui.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_pokerservergui.o moc_pokerservergui.cpp

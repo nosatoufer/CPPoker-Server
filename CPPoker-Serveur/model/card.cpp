@@ -2,7 +2,10 @@
 
 Card::Card() {}
 
-Card::Card(Rank rank, Suit suit) : rank(rank), suit(suit) {}
+Card::Card(Rank rank, Suit suit) :
+    rank(rank),
+    suit(suit)
+{}
 
 Card::Rank Card::getRank() {
     return rank;

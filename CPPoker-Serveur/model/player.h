@@ -2,13 +2,21 @@
 #define PLAYER_H
 
 #include <string>
+#include "playerexception.h"
 
 class Player
 {
 protected:
-    std::string name;
+    std::string nickname;
+    int cash;
 public:
-    Player(std::string name);
+    Player(std::string nickname, int cash=0);
+
+    int getCash();
+    void setCash(int cash);
+
+    std::string getNickname();
+    void setNickname(std::string nickname);
 };
 
 /*#include <QTcpSocket>
