@@ -19,7 +19,8 @@ protected:
     unsigned int smallBlindValue;
     unsigned int bigBlindValue;
     unsigned int round;
-    unsigned int biggestBet;
+    unsigned int biggestBet; // Utile pour vérifier que les joueurs s'alignent sur la même mise
+    unsigned int numberOfTurn; // Utile pour vérifier la fin d'un round : il faut que chaque joueur aie joué une fois (check ou bet) et qu'ils aient tous la même mise
 
 public:
     PokerGame(unsigned int smallBlindValue = 0, unsigned int bigBlindValue = 0, std::vector<Player*> players = std::vector<Player*>(), unsigned int dealer = 0, Room* room = nullptr);

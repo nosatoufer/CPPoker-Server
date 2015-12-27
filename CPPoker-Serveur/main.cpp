@@ -21,13 +21,27 @@ int main(int argc, char *argv[])
 
     Game* game = pokerRoom->startGame();
 
+    // Round 1
     static_cast<PokerGame*>(game)->bet(50);
 
     static_cast<PokerGame*>(game)->bet(25);
 
+    // Round 2
     static_cast<PokerGame*>(game)->check();
 
-    //static_cast<PokerGame*>(game)->check();
+    static_cast<PokerGame*>(game)->check();
+
+    static_cast<PokerGame*>(game)->check();
+
+    // Round 3
+    static_cast<PokerGame*>(game)->check();
+
+    static_cast<PokerGame*>(game)->bet(100);
+
+    static_cast<PokerGame*>(game)->bet(100);
+
+    static_cast<PokerGame*>(game)->bet(100);
+
 
     PokerServerGui w;
     w.show();

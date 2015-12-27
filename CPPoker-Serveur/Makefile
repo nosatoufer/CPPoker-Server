@@ -60,7 +60,9 @@ SOURCES       = main.cpp \
 		model/gameexception.cpp \
 		model/cardplayer.cpp \
 		model/pokerplayer.cpp \
-		model/playerexception.cpp moc_pokerservergui.cpp
+		model/playerexception.cpp \
+		network/request.cpp \
+		utils.cpp moc_pokerservergui.cpp
 OBJECTS       = main.o \
 		player.o \
 		connectionmanager.o \
@@ -77,6 +79,8 @@ OBJECTS       = main.o \
 		cardplayer.o \
 		pokerplayer.o \
 		playerexception.o \
+		request.o \
+		utils.o \
 		moc_pokerservergui.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
@@ -369,7 +373,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/CPPoker-Serveur1.0.0 || mkdir -p .tmp/CPPoker-Serveur1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents model/player.h network/connectionmanager.h network/servsocket.h view/pokerservergui.h model/room.h model/pokerroom.h model/card.h model/pokergame.h model/game.h model/roomexception.h model/deck.h model/gameexception.h model/gamestate.h model/cardplayer.h model/pokerplayer.h model/playerexception.h .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents main.cpp model/player.cpp network/connectionmanager.cpp network/servsocket.cpp view/pokerservergui.cpp model/room.cpp model/pokerroom.cpp model/pokergame.cpp model/game.cpp model/roomexception.cpp model/deck.cpp model/card.cpp model/gameexception.cpp model/cardplayer.cpp model/pokerplayer.cpp model/playerexception.cpp .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents view/pokerservergui.ui .tmp/CPPoker-Serveur1.0.0/ && (cd `dirname .tmp/CPPoker-Serveur1.0.0` && $(TAR) CPPoker-Serveur1.0.0.tar CPPoker-Serveur1.0.0 && $(COMPRESS) CPPoker-Serveur1.0.0.tar) && $(MOVE) `dirname .tmp/CPPoker-Serveur1.0.0`/CPPoker-Serveur1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/CPPoker-Serveur1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents model/player.h network/connectionmanager.h network/servsocket.h view/pokerservergui.h model/room.h model/pokerroom.h model/card.h model/pokergame.h model/game.h model/roomexception.h model/deck.h model/gameexception.h model/gamestate.h model/cardplayer.h model/pokerplayer.h model/playerexception.h network/request.h utils.h commands.h .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents main.cpp model/player.cpp network/connectionmanager.cpp network/servsocket.cpp view/pokerservergui.cpp model/room.cpp model/pokerroom.cpp model/pokergame.cpp model/game.cpp model/roomexception.cpp model/deck.cpp model/card.cpp model/gameexception.cpp model/cardplayer.cpp model/pokerplayer.cpp model/playerexception.cpp network/request.cpp utils.cpp .tmp/CPPoker-Serveur1.0.0/ && $(COPY_FILE) --parents view/pokerservergui.ui .tmp/CPPoker-Serveur1.0.0/ && (cd `dirname .tmp/CPPoker-Serveur1.0.0` && $(TAR) CPPoker-Serveur1.0.0.tar CPPoker-Serveur1.0.0 && $(COMPRESS) CPPoker-Serveur1.0.0.tar) && $(MOVE) `dirname .tmp/CPPoker-Serveur1.0.0`/CPPoker-Serveur1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/CPPoker-Serveur1.0.0
 
 
 clean:compiler_clean 
@@ -656,6 +660,8 @@ main.o: main.cpp view/pokerservergui.h \
 		model/pokergame.h \
 		model/card.h \
 		model/deck.h \
+		model/pokerplayer.h \
+		model/cardplayer.h \
 		model/roomexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
@@ -853,6 +859,8 @@ pokerroom.o: model/pokerroom.cpp model/pokerroom.h \
 		model/pokergame.h \
 		model/card.h \
 		model/deck.h \
+		model/pokerplayer.h \
+		model/cardplayer.h \
 		model/roomexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokerroom.o model/pokerroom.cpp
 
@@ -864,7 +872,9 @@ pokergame.o: model/pokergame.cpp model/pokergame.h \
 		model/gamestate.h \
 		model/gameexception.h \
 		model/card.h \
-		model/deck.h
+		model/deck.h \
+		model/pokerplayer.h \
+		model/cardplayer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokergame.o model/pokergame.cpp
 
 game.o: model/game.cpp model/game.h \
@@ -903,6 +913,14 @@ pokerplayer.o: model/pokerplayer.cpp model/pokerplayer.h \
 
 playerexception.o: model/playerexception.cpp model/playerexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playerexception.o model/playerexception.cpp
+
+request.o: network/request.cpp network/request.h \
+		utils.h \
+		commands.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o request.o network/request.cpp
+
+utils.o: utils.cpp utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o utils.o utils.cpp
 
 moc_pokerservergui.o: moc_pokerservergui.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_pokerservergui.o moc_pokerservergui.cpp

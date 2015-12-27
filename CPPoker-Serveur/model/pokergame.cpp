@@ -6,7 +6,8 @@ PokerGame::PokerGame(unsigned int smallBlindValue, unsigned int bigBlindValue, s
     smallBlindValue(smallBlindValue),
     bigBlindValue(bigBlindValue),
     round(1),
-    biggestBet(0)
+    biggestBet(0),
+    numberOfTurn(0)
 {}
 
 void PokerGame::startGame() {
@@ -27,13 +28,13 @@ void PokerGame::startGame() {
 
     // Si le nombre de joueur est égal à 2, le dealer fait office de small blind, il ne faut donc pas passer de tour.
     if (players.size() > 2) {
-        this->currentPlayer = this->getNextPlayerId();
+        this->nextPlayer();
     }
 
     static_cast<PokerPlayer*>(this->getCurrentPlayer())->bet(this->smallBlindValue);
-    this->currentPlayer = this->getNextPlayerId();
+    this->nextPlayer();
     static_cast<PokerPlayer*>(this->getCurrentPlayer())->bet(this->bigBlindValue);
-    this->currentPlayer = this->getNextPlayerId();
+    this->nextPlayer();
     this->biggestBet = this->bigBlindValue;
 
     for(unsigned int i=0; i<this->players.size(); ++i) {
@@ -99,6 +100,8 @@ void PokerGame::nextPlayer() {
         throw new GameException("Erreur lors du passage au joueur suivant : la partie n'est pas en cours");
     }
 
+    ++this->numberOfTurn;
+
     if (this->isRoundOver()) {
         if (round <= 4) {
             for(unsigned int i=0; i<this->players.size(); ++i) {
@@ -112,7 +115,8 @@ void PokerGame::nextPlayer() {
         } else if (round == 5) {
 
         }
-        ++round;
+        ++this->round;
+        this->numberOfTurn = 0;
     }
 
     this->currentPlayer = this->getNextPlayerId();
@@ -147,11 +151,16 @@ bool PokerGame::isRoundOver() {
     if (this->gameState != GameState::RUNNING) {
         throw new GameException("Erreur lors de la méthode isRoundOver(): la partie n'est pas en cours");
     }
-    bool finish = true;
-    unsigned int i = 1;
-    while (finish && i < this->players.size()) {
-        finish = (static_cast<PokerPlayer*>(this->players[i-1])->getCurrentBet() == static_cast<PokerPlayer*>(this->players[i])->getCurrentBet());
-        ++i;
+    bool finish;
+    if (this->numberOfTurn >= this->players.size()) {
+        finish = true;
+        unsigned int i = 1;
+        while (finish && i < this->players.size()) {
+            finish = (static_cast<PokerPlayer*>(this->players[i-1])->getCurrentBet() == static_cast<PokerPlayer*>(this->players[i])->getCurrentBet());
+            ++i;
+        }
+    } else {
+        finish = false;
     }
     return finish;
 }
