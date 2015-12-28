@@ -30,13 +30,13 @@ public:
     // Méthodes d'accès
     std::vector<Card*> getTableCard();
 
-    // Méthodes de jeu :
+    // Méthodes de jeu
     virtual void bet(unsigned int amount);
     virtual void fold();
     virtual void check();
     virtual void allIn();
 
-    // Méthodes utilitaires :
+    // Méthodes utilitaires
     virtual void nextPlayer();
     virtual unsigned int getRound();
     virtual unsigned int numberOfActivePlayer();
