@@ -4,8 +4,8 @@
 #include <map>
 #include <string.h>
 #include <iostream>
-#include "../utils.h"
-#include "../commands.h"
+#include "utils.h"
+#include "commands.h"
 #include <stdlib.h>
 #include <sstream>
 

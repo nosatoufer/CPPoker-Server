@@ -26,7 +26,6 @@ public:
     virtual void startGame() = 0;
 
     virtual void nextPlayer();
-    virtual unsigned int getPreviousPlayerId();
 
     virtual void setCurrentPlayerId(unsigned int number);
 

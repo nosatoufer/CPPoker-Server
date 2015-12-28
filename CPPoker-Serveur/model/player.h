@@ -9,6 +9,7 @@ class Player
 protected:
     std::string nickname;
     int cash;
+
 public:
     Player(std::string nickname, int cash=0);
 

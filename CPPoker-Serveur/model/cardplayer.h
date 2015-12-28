@@ -10,6 +10,7 @@ class CardPlayer : public Player
 {
 protected:
     std::vector<Card*> hand;
+
 public:
     CardPlayer(std::string nickname, int cash=0);
 

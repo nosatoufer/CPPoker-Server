@@ -8,7 +8,7 @@ PokerRoom::PokerRoom(unsigned int minPlayer, unsigned int maxPlayer, unsigned in
 
 Game* PokerRoom::startGame() {
     if (!this->checkNumberOfPlayer()) {
-        throw new RoomException("Nombre de joueur incorrect.");
+        throw RoomException("Nombre de joueur incorrect.");
     }
     Game* pokerGame = new PokerGame(this->smallBlindValue, this->bigBlindValue, this->players, 0, this);
     pokerGame->startGame();

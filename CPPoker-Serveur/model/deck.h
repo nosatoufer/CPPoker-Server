@@ -10,6 +10,7 @@ class Deck
 {
 protected:
     std::vector<Card*> cards;
+
 public:
     Deck();
 

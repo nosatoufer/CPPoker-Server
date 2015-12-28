@@ -7,11 +7,11 @@ Card::Card(Rank rank, Suit suit) :
     suit(suit)
 {}
 
-Card::Rank Card::getRank() {
+Card::Rank Card::getRank() const {
     return rank;
 }
 
-Card::Suit Card::getSuit() {
+Card::Suit Card::getSuit() const {
     return suit;
 }
 
@@ -45,3 +45,14 @@ std::ostream& operator<<(std::ostream& os, Card card) {
     }
     return os;
 }
+
+bool operator< (Card const &card1, Card const &card2)
+{
+    return (static_cast<int>(card1.getRank()) < static_cast<int>(card2.getRank()));
+}
+
+bool operator== (Card const &card1, Card const &card2)
+{
+    return (static_cast<int>(card1.getRank()) == static_cast<int>(card2.getRank()));
+}
+

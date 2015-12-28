@@ -30,7 +30,7 @@ SOURCES += main.cpp\
     model/pokerplayer.cpp \
     model/playerexception.cpp \
     network/request.cpp \
-    utils.cpp
+    network/utils.cpp
 
 HEADERS += \
     model/player.h \
@@ -51,7 +51,9 @@ HEADERS += \
     model/playerexception.h \
     network/request.h \
     utils.h \
-    commands.h
+    commands.h \
+    network/commands.h \
+    network/utils.h
 
 FORMS += \
     view/pokerservergui.ui
