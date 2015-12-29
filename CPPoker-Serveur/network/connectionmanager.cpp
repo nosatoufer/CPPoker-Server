@@ -17,6 +17,8 @@ void ConnectionManager::read()
             if(servSocket->nicknameAvailable(request.get("nickname")))
             {
                 player->setNickname(request.get("nickname"));
+                request.setStatus(Request::SUCCESS);
+                client->write(request);
             }
             break;
     }
