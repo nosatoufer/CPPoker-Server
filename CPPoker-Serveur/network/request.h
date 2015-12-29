@@ -31,6 +31,8 @@ public:
 
     virtual operator std::string ();
 
+    virtual std::string toString();
+
     virtual bool empty();
 
     virtual bool isSet(const std::string &s);

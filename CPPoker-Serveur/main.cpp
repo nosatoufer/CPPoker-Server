@@ -4,10 +4,13 @@
 #include "model/player.h"
 #include "model/pokerroom.h"
 
+#include "controller/controller.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    /*
     try
     {
 
@@ -87,9 +90,14 @@ int main(int argc, char *argv[])
     } catch(std::exception const& e) {
         std::cerr << "ERREUR : " << e.what() << std::endl;
     }
+    */
 
-    PokerServerGui w;
-    w.show();
+    PokerServerGui* w = new PokerServerGui();
+    ServSocket* serv = new ServSocket();
+
+    Controller* controller = new Controller(w, serv);
+
+    w->show();
 
     return a.exec();
 }

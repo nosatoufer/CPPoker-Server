@@ -11,7 +11,7 @@ protected:
     int cash;
 
 public:
-    Player(std::string nickname, int cash=0);
+    Player(std::string nickname="", int cash=0);
 
     int getCash();
     void setCash(int cash);

@@ -24,6 +24,10 @@ Request::operator std::string () {
     return jsonEncode(values);
 }
 
+std::string Request::toString() {
+    return jsonEncode(values);
+}
+
 bool Request::empty() {
     return values.empty();
 }

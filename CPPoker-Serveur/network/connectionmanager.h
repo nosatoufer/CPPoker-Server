@@ -1,21 +1,26 @@
 #ifndef CONNEXIONMANAGER_H
 #define CONNEXIONMANAGER_H
 
-/*#include <QTcpSocket>
+#include <QTcpSocket>
 #include <QMap>
 
-#include "player.h"
+#include "../model/player.h"
+#include "../network/servsocket.h"
+#include "request.h"
 
-class connectionManager : public QObject
+class ServSocket;
+
+class ConnectionManager : public QObject
 {
     Q_OBJECT
 private:
-    QTcpSocket * m_newClient;
-    QMap<QString, Player *>* m_players;
+    QTcpSocket *client;
+    ServSocket *servSocket;
+    Player *player;
 public:
-    connectionManager(QTcpSocket * newClient, QMap<QString, Player *> *players);
+    ConnectionManager(QTcpSocket* newClient, Player* player, ServSocket* serv);
 public slots:
     void read();
-};*/
+};
 
 #endif // CONNEXIONMANAGER_H

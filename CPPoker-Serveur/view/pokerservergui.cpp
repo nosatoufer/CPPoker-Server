@@ -2,6 +2,8 @@
 #include "ui_pokerservergui.h"
 #include <QMessageBox>
 
+class Controller;
+
 PokerServerGui::PokerServerGui(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::PokerServerGui)
@@ -19,6 +21,11 @@ PokerServerGui::PokerServerGui(QWidget *parent) :
 PokerServerGui::~PokerServerGui()
 {
     delete ui;
+}
+
+void PokerServerGui::attachController(Controller* controller)
+{
+    this->controller = controller;
 }
 
 void PokerServerGui::slotQuitter()

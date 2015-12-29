@@ -5,14 +5,15 @@
 
 class Card
 {
+public:
+    enum Rank {ACE, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, HEIGHT, NINE, TEN, JACK, QUEEN, KING};
+    enum Suit {CLUBS, DIAMONDS, HEARTS, SPADES};
+
 protected:
     Rank rank;
     Suit suit;
 
 public:
-    enum Rank {ACE, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, HEIGHT, NINE, TEN, JACK, QUEEN, KING};
-    enum Suit {CLUBS, DIAMONDS, HEARTS, SPADES};
-
     Card();
     Card(Rank rank, Suit suit);
 

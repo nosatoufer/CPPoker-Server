@@ -1,18 +1,23 @@
-/*#include "connectionmanager.h"
+#include "connectionmanager.h"
 
-connectionManager::connectionManager(QTcpSocket *newClient, QMap<QString, Player *> *players) :
-    m_newClient(newClient),
-    m_players(players)
+ConnectionManager::ConnectionManager(QTcpSocket *newClient, Player* player, ServSocket *servSocket) :
+    client(newClient),
+    servSocket(servSocket),
+    player(player)
 {
     connect(newClient, SIGNAL(readyRead()), this, SLOT(read()));
 }
 
-void connectionManager::read() // A changer pour la sérialisation
+void ConnectionManager::read()
 {
-    QString name = m_newClient->readAll();
-    if(!m_players->contains(name))
-    {
-        m_players->insert(name, new Player(m_newClient, &name));
-    }
-}*/
+    Request request(client->readAll());
 
+    switch (request.getCommand()) {
+        case LOGIN:
+            if(servSocket->nicknameAvailable(request.get("nickname")))
+            {
+                player->setNickname(request.get("nickname"));
+            }
+            break;
+    }
+}

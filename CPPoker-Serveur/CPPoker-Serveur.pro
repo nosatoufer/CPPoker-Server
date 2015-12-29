@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT += core gui
+QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,7 +31,8 @@ SOURCES += main.cpp\
     model/pokerplayer.cpp \
     model/playerexception.cpp \
     network/request.cpp \
-    network/utils.cpp
+    network/utils.cpp \
+    controller/controller.cpp
 
 HEADERS += \
     model/player.h \
@@ -53,7 +55,8 @@ HEADERS += \
     utils.h \
     commands.h \
     network/commands.h \
-    network/utils.h
+    network/utils.h \
+    controller/controller.h
 
 FORMS += \
     view/pokerservergui.ui
