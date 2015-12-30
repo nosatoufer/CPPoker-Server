@@ -19,13 +19,13 @@ class ServSocket : public QObject
 private:
     QTcpServer* m_serv;
     QTcpSocket* m_sock;
-    QMap<Player*, ConnectionManager*> m_Player;
+    QMap<Player*, ConnectionManager*> m_player;
     Controller* controller;
 
 public:
     explicit ServSocket(QObject *parent = 0);
 
-    bool nicknameAvailable(QString nickname);
+    bool nicknameAvailable(std::string nickname);
     void attachController(Controller* controller);
 
 public slots:

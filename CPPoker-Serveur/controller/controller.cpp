@@ -7,3 +7,10 @@ Controller::Controller(PokerServerGui* w, ServSocket* serv) :
     w->attachController(this);
     serv->attachController(this);
 }
+
+void Controller::update()
+{
+    //
+}
+
+

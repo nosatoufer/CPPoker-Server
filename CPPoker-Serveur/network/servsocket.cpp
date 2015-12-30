@@ -18,7 +18,7 @@ ServSocket::ServSocket(QObject *parent) :
 void ServSocket::newConnection()
 {
     Player* player = new Player();
-    m_Player.insert(player, new ConnectionManager(m_serv->nextPendingConnection(), player, this));
+    m_player.insert(player, new ConnectionManager(m_serv->nextPendingConnection(), player, this));
 }
 
 void ServSocket::attachController(Controller* controller)
@@ -26,13 +26,13 @@ void ServSocket::attachController(Controller* controller)
     this->controller = controller;
 }
 
-bool ServSocket::nicknameAvailable(QString nickname)
+bool ServSocket::nicknameAvailable(std::string nickname)
 {
     bool available = true;
-    QMapIterator<Player*, ConnectionManager*> i(m_Player);
+    QMapIterator<Player*, ConnectionManager*> i(m_player);
     while (i.hasNext() && available) {
         i.next();
-        if (i.key()->getNickname() == nickname.toStdString()) {
+        if (i.key()->getNickname() == nickname) {
             available = false;
         }
     }

@@ -1,25 +1,42 @@
 #include "connectionmanager.h"
+#include <QDebug>
 
 ConnectionManager::ConnectionManager(QTcpSocket *newClient, Player* player, ServSocket *servSocket) :
-    client(newClient),
+    m_sock(newClient),
     servSocket(servSocket),
     player(player)
 {
-    connect(newClient, SIGNAL(readyRead()), this, SLOT(read()));
+    qDebug() << "Test";
+    connect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(m_sock, SIGNAL(readyRead()), this, SLOT(read()));
 }
 
 void ConnectionManager::read()
 {
-    Request request(client->readAll());
+    m_requests.insert(m_requests.begin(), new Request(m_sock->readAll().toStdString()));
+    notify();
+}
 
-    switch (request.getCommand()) {
-        case LOGIN:
-            if(servSocket->nicknameAvailable(request.get("nickname")))
-            {
-                player->setNickname(request.get("nickname"));
-                request.setStatus(Request::SUCCESS);
-                client->write(request);
-            }
-            break;
-    }
+void ConnectionManager::disconnected()
+{
+    qDebug() << "Disconnected";
+}
+
+void ConnectionManager::write(Request req)
+{
+    std::string s = req.toString();
+    if(m_sock->isWritable())
+        m_sock->write(s.c_str(), s.length());
+}
+
+bool ConnectionManager::hasRequests()
+{
+    return m_requests.size() != 0;
+}
+
+Request * ConnectionManager::getRequest()
+{
+    Request * c = m_requests.back();
+    m_requests.pop_back();
+    return c;
 }

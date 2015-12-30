@@ -32,7 +32,9 @@ SOURCES += main.cpp\
     model/playerexception.cpp \
     network/request.cpp \
     network/utils.cpp \
-    controller/controller.cpp
+    controller/controller.cpp \
+    pattern/observer.cpp \
+    pattern/subject.cpp
 
 HEADERS += \
     model/player.h \
@@ -52,11 +54,14 @@ HEADERS += \
     model/pokerplayer.h \
     model/playerexception.h \
     network/request.h \
-    utils.h \
-    commands.h \
+    network/utils.h \
+    network/commands.h \
     network/commands.h \
     network/utils.h \
-    controller/controller.h
+    controller/controller.h \
+    pattern/observer.h \
+    pattern/subject.h \
+    pattern/test.hpp
 
 FORMS += \
     view/pokerservergui.ui
