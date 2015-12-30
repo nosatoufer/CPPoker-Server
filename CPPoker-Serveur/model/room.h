@@ -4,8 +4,10 @@
 #include <vector>
 #include "player.h"
 #include "game.h"
+#include "../controller/modelcontroller.h"
 
 class Game;
+class ModelController;
 
 class Room
 {
@@ -18,6 +20,8 @@ protected:
 
     Game* game;
 
+    ModelController* controller;
+
 public:
     Room(unsigned int minPlayer, unsigned int maxPlayer, std::string name = "", std::vector<Player*> players = std::vector<Player*>());
 
@@ -26,6 +30,8 @@ public:
     virtual Game* startGame() = 0;
 
     bool checkNumberOfPlayer();
+
+    void attachController(ModelController* controller);
 };
 
 #endif // ROOM_H

@@ -12,20 +12,22 @@
 
 class ServSocket;
 
-class ConnectionManager : public QObject, public Subject
+class ConnectionManager : public QObject//, public Subject
 {
     Q_OBJECT
 private:
     QTcpSocket *m_sock;
     ServSocket *servSocket;
-    Player *player;
-    std::vector<Request *> m_requests;
+    std::string nickname;
+    //std::vector<Request *> m_requests;
 
 public:
-    ConnectionManager(QTcpSocket* newClient, Player* player, ServSocket* serv);
+    ConnectionManager(QTcpSocket* newClient, std::string player, ServSocket* serv);
     void write(Request req);
-    bool hasRequests();
-    Request *getRequest();
+    std::string getNickname();
+    //bool hasRequests();
+    //Request *getRequest();
+
 public slots:
     void read();
     void disconnected();

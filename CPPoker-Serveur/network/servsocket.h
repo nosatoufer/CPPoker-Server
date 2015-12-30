@@ -11,6 +11,8 @@
 #include "controller/controller.h"
 
 class Controller;
+class ModelController;
+class ServerController;
 class ConnectionManager;
 
 class ServSocket : public QObject
@@ -19,14 +21,19 @@ class ServSocket : public QObject
 private:
     QTcpServer* m_serv;
     QTcpSocket* m_sock;
-    QMap<Player*, ConnectionManager*> m_player;
+    std::vector<ConnectionManager*> m_player;
+
     Controller* controller;
+    ServerController* serverController;
+    std::vector<ModelController*> modelController;
 
 public:
     explicit ServSocket(QObject *parent = 0);
 
     bool nicknameAvailable(std::string nickname);
     void attachController(Controller* controller);
+    void attachController(ModelController* controller);
+    void attachController(ServerController* controller);
 
 public slots:
     void newConnection();

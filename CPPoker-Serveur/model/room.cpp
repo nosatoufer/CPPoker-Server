@@ -14,3 +14,7 @@ void Room::addPlayer(Player* player) {
 bool Room::checkNumberOfPlayer() {
     return (players.size() <= maxPlayer && players.size() >= minPlayer);
 }
+
+void Room::attachController(ModelController* controller) {
+    this->controller = controller;
+}

@@ -28,6 +28,11 @@ void PokerServerGui::attachController(Controller* controller)
     this->controller = controller;
 }
 
+void PokerServerGui::attachController(ServerController* controller)
+{
+    this->serverController = controller;
+}
+
 void PokerServerGui::slotQuitter()
 {
     QMessageBox::StandardButton reply = QMessageBox::question(this, "Quitter ?", "Voulez-vous vraiment arrêter le serveur ?", QMessageBox::Yes|QMessageBox::No);

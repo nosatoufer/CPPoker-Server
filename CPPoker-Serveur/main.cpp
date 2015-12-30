@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     PokerServerGui* w = new PokerServerGui();
     ServSocket* serv = new ServSocket();
 
-    Controller* controller = new Controller(w, serv);
+    ServerController* controller = new ServerController(w, serv);
 
     w->show();
 
