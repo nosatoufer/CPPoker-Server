@@ -36,7 +36,11 @@ SOURCES += main.cpp\
     pattern/observer.cpp \
     pattern/subject.cpp \
     controller/modelcontroller.cpp \
-    controller/servercontroller.cpp
+    controller/servercontroller.cpp \
+    model/roommanager.cpp \
+    pattern/netobserver.cpp \
+    pattern/netsubject.cpp \
+    network/servermanager.cpp
 
 HEADERS += \
     model/player.h \
@@ -63,9 +67,12 @@ HEADERS += \
     controller/controller.h \
     pattern/observer.h \
     pattern/subject.h \
-    pattern/test.hpp \
     controller/modelcontroller.h \
-    controller/servercontroller.h
+    controller/servercontroller.h \
+    model/roommanager.h \
+    pattern/netobserver.h \
+    pattern/netsubject.h \
+    network/servermanager.h
 
 FORMS += \
     view/pokerservergui.ui

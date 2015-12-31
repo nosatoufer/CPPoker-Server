@@ -81,3 +81,10 @@ void Request::setMap(std::string key, std::map<std::string,std::string> m) {
 }
 
 Request::~Request() {}
+
+Request *Request::usedNickname()
+{
+    Request * req = new Request();
+    req->setCommand(NICK_USED);
+    return req;
+}

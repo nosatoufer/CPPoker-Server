@@ -1,10 +1,10 @@
 #include "connectionmanager.h"
 #include <QDebug>
 
-ConnectionManager::ConnectionManager(QTcpSocket *newClient, std::string nickname, ServSocket *servSocket) :
+ConnectionManager::ConnectionManager(QTcpSocket *newClient) : //, ServSocket *servSocket) :
     m_sock(newClient),
-    servSocket(servSocket),
-    nickname(nickname)
+    //servSocket(servSocket),
+    nickname("guest")
 {
     qDebug() << "Client connected";
     connect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
@@ -17,8 +17,9 @@ ConnectionManager::ConnectionManager(QTcpSocket *newClient, std::string nickname
 
 void ConnectionManager::read()
 {
-    //m_requests.insert(m_requests.begin(), new Request(m_sock->readAll().toStdString()));
-    //notify();
+    m_requests.insert(m_requests.begin(), new Request(m_sock->readAll().toStdString()));
+    notify();
+    /**
     Request request((QString(m_sock->readAll())).toStdString());
     switch (request.getCommand()) {
         case LOGIN:
@@ -43,6 +44,7 @@ void ConnectionManager::read()
             qDebug() << "Unknown command";
         break;
     }
+    */
 }
 
 void ConnectionManager::disconnected()
@@ -58,12 +60,17 @@ void ConnectionManager::write(Request req)
         m_sock->write(s.c_str(), s.length());
 }
 
+void ConnectionManager::setNickName(std::string name)
+{
+    this->nickname = name;
+}
+
 std::string ConnectionManager::getNickname()
 {
     return this->nickname;
 }
 
-/*bool ConnectionManager::hasRequests()
+bool ConnectionManager::hasRequests()
 {
     return m_requests.size() != 0;
 }
@@ -73,4 +80,4 @@ Request * ConnectionManager::getRequest()
     Request * c = m_requests.back();
     m_requests.pop_back();
     return c;
-}*/
+}

@@ -5,7 +5,7 @@ ServerController::ServerController(PokerServerGui* w, ServSocket* serv) :
     serv(serv)
 {
     w->attachController(this);
-    serv->attachController(this);
+    //serv->attachController(this);
 }
 
 void ServerController::update()

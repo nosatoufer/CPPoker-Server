@@ -7,26 +7,29 @@
 
 #include "../model/player.h"
 #include "../network/servsocket.h"
-#include "../pattern/subject.h"
+#include "../pattern/netsubject.h"
 #include "request.h"
 
+/*
 class ServSocket;
-
-class ConnectionManager : public QObject//, public Subject
+*/
+class ConnectionManager : public QObject, public NetSubject
 {
     Q_OBJECT
 private:
     QTcpSocket *m_sock;
-    ServSocket *servSocket;
+    //ServSocket *servSocket;
     std::string nickname;
-    //std::vector<Request *> m_requests;
+    std::vector<Request *> m_requests;
 
 public:
-    ConnectionManager(QTcpSocket* newClient, std::string player, ServSocket* serv);
+    ConnectionManager(QTcpSocket* newClient);
+    //ConnectionManager(QTcpSocket* newClient, ServSocket* serv);
     void write(Request req);
+    void setNickName(std::string name);
     std::string getNickname();
-    //bool hasRequests();
-    //Request *getRequest();
+    bool hasRequests();
+    Request *getRequest();
 
 public slots:
     void read();

@@ -50,6 +50,8 @@ public:
     virtual std::map<std::string, std::string> getMap(std::string s);
 
     virtual ~Request();
+
+    static Request *usedNickname();
 };
 
 #endif // REQUEST_H

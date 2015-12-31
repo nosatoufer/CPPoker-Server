@@ -6,6 +6,7 @@
 #include "../pattern/observer.h"
 #include "../model/game.h"
 
+
 class PokerServerGui;
 class ServSocket;
 

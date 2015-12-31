@@ -4,6 +4,7 @@
 ServSocket::ServSocket(QObject *parent) :
     QObject(parent)
 {
+    m_servManager = new ServerManager();
     m_serv = new QTcpServer();
 
     connect(m_serv, SIGNAL(newConnection()), this, SLOT(newConnection()));
@@ -17,9 +18,9 @@ ServSocket::ServSocket(QObject *parent) :
 
 void ServSocket::newConnection()
 {
-    m_player.push_back(new ConnectionManager(m_serv->nextPendingConnection(), "", this));
+    m_servManager->addUser(new ConnectionManager(m_serv->nextPendingConnection()));//, this));
 }
-
+/*
 void ServSocket::attachController(Controller* controller)
 {
     this->controller = controller;
@@ -47,3 +48,4 @@ bool ServSocket::nicknameAvailable(std::string nickname)
     }
     return available;
 }
+*/

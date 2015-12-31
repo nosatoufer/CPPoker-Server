@@ -6,17 +6,17 @@
 #include "../pattern/observer.h"
 #include "../model/game.h"
 
+
 class Room;
-class ServSocket;
 
 class ModelController : public Observer
 {
 protected:
     Room* model;
-    ServSocket* serv;
 
 public:
-    ModelController(Room* room, ServSocket* serv);
+    ModelController();
+    ModelController(Room* room);
     void update();
 };
 
