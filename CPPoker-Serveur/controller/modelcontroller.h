@@ -18,6 +18,21 @@ public:
     ModelController();
     ~ModelController();
     ModelController(Room* room);
+
+    // TODO :
+    // Les différentes option de jeu d'un joueur
+    bool allIn(std::string name);
+    bool call(std::string name);
+    bool check(std::string name);
+    bool raise(std::string name);
+    bool fold(std::string name);
+
+    // Ajoute un player quand la room ajoute un joueur
+    bool addPlayer(std::string name);
+
+    void startGame();
+
+
     void update();
 };
 
