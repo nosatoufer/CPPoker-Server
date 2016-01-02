@@ -23,16 +23,28 @@ void RoomManager::readRequest(std::string pName, Request *req)
     switch(req->getCommand())
     {
     case POKER_ALL_IN:
-        //m_mController->allIN(pName);
+        if (m_mController->allIn(pName))
+            req->setStatus("STATUS_SUCCESS");
+        else
+            req->setStatus("STATUS_FAILLURE");
         break;
     case POKER_CALL:
-        //m_mController->call(pName);
+        if (m_mController->call(pName))
+            req->setStatus("STATUS_SUCCESS");
+        else
+            req->setStatus("STATUS_FAILLURE");
         break;
     case POKER_CHECK:
-        //m_mController->check(pName);
+        if ( m_mController->check(pName))
+            req->setStatus("STATUS_SUCCESS");
+        else
+            req->setStatus("STATUS_FAILLURE");
         break;
     case POKER_FOLD:
-        //m_mController->fold(pName);
+        if (m_mController->fold(pName))
+            req->setStatus("STATUS_SUCCESS");
+        else
+            req->setStatus("STATUS_FAILLURE");
         break;
     }
 }
@@ -42,6 +54,7 @@ void RoomManager::addPlayer(ConnectionManager *player)
     // IF GAME != STARTED
     m_players.append(player);
     player->addObserver(this);
+    m_mController->addPlayer(player->getNickname());
 }
 
 bool RoomManager::remPlayer(ConnectionManager *player)
