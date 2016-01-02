@@ -5,6 +5,7 @@ typedef int Command;
 
 const Command NO_COMMAND = -1;
 const Command CONNECT = 0;
+const Command DISCONNECT = 1;
 
 
 // Connexion 100 -> 149

@@ -18,6 +18,9 @@ ConnectionManager::ConnectionManager(QTcpSocket *newClient) : //, ServSocket *se
 
 ConnectionManager::~ConnectionManager()
 {
+    disconnect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    disconnect(m_sock, SIGNAL(readyRead()), this, SLOT(read));
+    m_sock->close();
     delete m_sock;
     for(Request * req : m_requests)
         delete req;

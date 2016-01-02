@@ -18,48 +18,92 @@ void RoomManager::run()
     //m_mController.startGame();
 }
 
-void RoomManager::readRequest(std::string pName, Request *req)
+void RoomManager::readRequest(ConnectionManager *player, Request *req)
 {
     switch(req->getCommand())
     {
     case POKER_ALL_IN:
-        if (m_mController->allIn(pName))
+        if (m_mController->allIn(player->getNickname()))
             req->setStatus("STATUS_SUCCESS");
         else
             req->setStatus("STATUS_FAILLURE");
         break;
     case POKER_CALL:
-        if (m_mController->call(pName))
+        if (m_mController->call(player->getNickname()))
             req->setStatus("STATUS_SUCCESS");
         else
             req->setStatus("STATUS_FAILLURE");
         break;
     case POKER_CHECK:
-        if ( m_mController->check(pName))
+        if ( m_mController->check(player->getNickname()))
             req->setStatus("STATUS_SUCCESS");
         else
             req->setStatus("STATUS_FAILLURE");
         break;
     case POKER_FOLD:
-        if (m_mController->fold(pName))
+        if (m_mController->fold(player->getNickname()))
             req->setStatus("STATUS_SUCCESS");
         else
             req->setStatus("STATUS_FAILLURE");
         break;
+    case DISCONNECT:
+        remPlayer(player);
+        break;
+    default:
+        req->setStatus("STATUS_FAILLURE");
+
     }
+    if (req->getStatus() == "STATUS_SUCCESS")
+    {
+        sendToAll(req);
+    }
+    else
+    {
+        player->write(req);
+        delete req;
+    }
+}
+
+void RoomManager::sendToAll(Request *req)
+{
+    for(ConnectionManager* p : m_players)
+        p->write(req);
+    delete req;
 }
 
 void RoomManager::addPlayer(ConnectionManager *player)
 {
-    // IF GAME != STARTED
+    // IF m_mController.status() != STARTED
+
+    Request * req = new Request();
+    req->setCommand(PLAYER_JOINED);
+    req->setMessage(player->getNickname());
+    sendToAll(req);
     m_players.append(player);
     player->addObserver(this);
     m_mController->addPlayer(player->getNickname());
+    req = new Request();
+    req->setCommand(PLAYER_JOINED);
+    for(ConnectionManager * p : m_players)
+    {
+        req->setMessage(p->getNickname());
+        player->write(req);
+    }
+    delete req;
+
 }
 
 bool RoomManager::remPlayer(ConnectionManager *player)
 {
-    return m_players.removeOne(player);
+    if (m_players.removeOne(player))
+    {
+        Request * req = new Request();
+        req->setCommand(PLAYER_LEFT);
+        req->setMessage(player->getNickname());
+        sendToAll(req);
+        delete player;
+    }
+
 }
 
 QString RoomManager::name() const
@@ -98,7 +142,7 @@ void RoomManager::netUpdate()
     {
         if(player->hasRequests())
         {
-            readRequest(player->getNickname(), player->getRequest());
+            readRequest(player, player->getRequest());
         }
     }
 

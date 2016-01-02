@@ -40,7 +40,8 @@ public:
 
 private:
     void run();
-    void readRequest(std::string pName, Request * req);
+    void readRequest(ConnectionManager * player, Request * req);
+    void sendToAll(Request * req);
 };
 
 #endif // ROOMMANAGER_H
