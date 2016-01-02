@@ -82,6 +82,14 @@ void Request::setMap(std::string key, std::map<std::string,std::string> m) {
 
 Request::~Request() {}
 
+Request *Request::createRequest(Command cmd, std::string msg)
+{
+    Request * req = new Request();
+    req->setCommand(cmd);
+    req->setMessage(msg);
+    return req;
+}
+
 Request *Request::usedNickname()
 {
     Request * req = new Request();

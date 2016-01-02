@@ -24,11 +24,36 @@ private:
 
 public:
     ConnectionManager(QTcpSocket* newClient);
+    ~ConnectionManager();
     //ConnectionManager(QTcpSocket* newClient, ServSocket* serv);
-    void write(Request req);
+    /**
+     * @brief write writes a request to the socket
+     * @param req the request to send
+     */
+    void write(Request *req);
+
+    /**
+     * @brief setNickName set the player nickname
+     * @param name the new player's name
+     */
     void setNickName(std::string name);
+
+    /**
+     * @brief getNickname returns the player's nickname
+     * @return the player's nickname
+     */
     std::string getNickname();
+
+    /**
+     * @brief hasRequests returns true if there is request to read
+     * @return true if there is request to read
+     */
     bool hasRequests();
+
+    /**
+     * @brief getRequest remove a request from the stack and returns it
+     * @return a request
+     */
     Request *getRequest();
 
 public slots:

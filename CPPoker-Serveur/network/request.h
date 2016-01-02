@@ -51,6 +51,7 @@ public:
 
     virtual ~Request();
 
+    static Request *createRequest(Command cmd, std::string msg = "");
     static Request *usedNickname();
 };
 

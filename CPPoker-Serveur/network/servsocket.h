@@ -34,6 +34,7 @@ private:
     */
 public:
     explicit ServSocket(QObject *parent = 0);
+    ~ServSocket();
 /*
     bool nicknameAvailable(std::string nickname);
     void attachController(Controller* controller);

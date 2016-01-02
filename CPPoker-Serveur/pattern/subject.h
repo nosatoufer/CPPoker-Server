@@ -2,16 +2,17 @@
 #define SUBJECT_H
 
 #include "observer.h"
-#include <vector>
+#include <QVector>
 
 
 class Subject
 {
 private:
-    std::vector<Observer*> m_observers;
+    QVector<Observer*> m_observers;
 public:
     Subject();
     void addObserver(Observer * obs);
+    void remObserver(Observer * obs);
     void notify();
 
 

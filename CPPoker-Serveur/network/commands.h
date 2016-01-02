@@ -11,6 +11,9 @@ const Command CONNECT = 0;
 
 const Command LOGIN = 100;
 const Command NICK_USED = 105;
+const Command ROOM_LIST = 110;
+const Command ROOM_CREATE = 111;
+const Command ROOM_JOIN = 112;
 
 // Room 150 -> 199
 const Command PLAYER_JOINED = 150;

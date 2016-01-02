@@ -5,6 +5,11 @@ ModelController::ModelController()
 
 }
 
+ModelController::~ModelController()
+{
+    //delete model;
+}
+
 ModelController::ModelController(Room* room) :
     model(room)
 {

@@ -23,6 +23,7 @@ private:
 
 public:
     RoomManager(QString name);
+    ~RoomManager();
 
 
 
@@ -30,6 +31,7 @@ public:
     bool remPlayer(ConnectionManager * player);
 
     QString name() const;
+    int nbPlayer() const;
     bool checkName(std::string pName) const;
     QVector<std::string> playerName() const;
 

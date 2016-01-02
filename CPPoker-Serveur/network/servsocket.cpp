@@ -16,6 +16,12 @@ ServSocket::ServSocket(QObject *parent) :
 
 }
 
+ServSocket::~ServSocket()
+{
+    delete m_servManager;
+    delete m_serv;
+}
+
 void ServSocket::newConnection()
 {
     m_servManager->addUser(new ConnectionManager(m_serv->nextPendingConnection()));//, this));

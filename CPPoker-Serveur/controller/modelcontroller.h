@@ -16,6 +16,7 @@ protected:
 
 public:
     ModelController();
+    ~ModelController();
     ModelController(Room* room);
     void update();
 };

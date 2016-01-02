@@ -10,9 +10,18 @@ ConnectionManager::ConnectionManager(QTcpSocket *newClient) : //, ServSocket *se
     connect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
     connect(m_sock, SIGNAL(readyRead()), this, SLOT(read()));
 
-    Request req;
-    req.setCommand(LOGIN);
+    Request * req = new Request();
+    req->setCommand(LOGIN);
     this->write(req);
+    delete req;
+}
+
+ConnectionManager::~ConnectionManager()
+{
+    delete m_sock;
+    for(Request * req : m_requests)
+        delete req;
+
 }
 
 void ConnectionManager::read()
@@ -52,12 +61,14 @@ void ConnectionManager::disconnected()
     qDebug() << "Client disconnected";
 }
 
-void ConnectionManager::write(Request req)
+void ConnectionManager::write(Request * req)
 {
-    std::string s = req.toString();
-    qDebug() << "SEND : " << QString::fromStdString(s);
     if(m_sock->isWritable())
+    {
+        std::string s = req->toString();
+        qDebug() << "SEND : " << QString::fromStdString(s);
         m_sock->write(s.c_str(), s.length());
+    }
 }
 
 void ConnectionManager::setNickName(std::string name)
@@ -77,7 +88,7 @@ bool ConnectionManager::hasRequests()
 
 Request * ConnectionManager::getRequest()
 {
-    Request * c = m_requests.back();
+    Request * req = m_requests.back();
     m_requests.pop_back();
-    return c;
+    return req;
 }
