@@ -3,7 +3,7 @@
 
 #include <QTcpSocket>
 #include <QMap>
-#include <vector>
+#include <QVector>
 
 #include "../model/pokermanager.h"
 #include "../network/servsocket.h"
@@ -13,15 +13,15 @@
 #include <QMutex>
 #include <QMutexLocker>
 
-/*
-class ServSocket;
-*/
+/**
+ * @brief The Client class represent a client, received his requests and emit a signal to call the handler
+ */
 class ConnectionManager : public QObject
 {
     Q_OBJECT
 private:
     QTcpSocket *m_sock;
-    std::vector<Request *> m_requests;
+    QVector<Request *> m_requests;
     std::string nickname;
 
 public:
@@ -62,13 +62,32 @@ public:
      */
     void close();
 
+    /**
+     * @brief serverToRoom connect the newRequest signal to a PokerManager
+     * @param room
+     */
     void serverToRoom(PokerManager* room);
+
 public slots:
+    /**
+     * @brief read slot called when QTcpSocket received data
+     */
     void read();
+    /**
+     * @brief disconnected slot called when QTcpSocket disconnect
+     */
     void disconnected();
 
 signals:
+    /**
+     * @brief clientDisconnected signal send when QTcpSocket disconnect
+     * @param cm pointer to the client
+     */
     void clientDisconnected(ConnectionManager* cm);
+    /**
+     * @brief newRequest signal send when a new request is received
+     * @param cm pointer to the client
+     */
     void newRequest(ConnectionManager* cm);
 };
 

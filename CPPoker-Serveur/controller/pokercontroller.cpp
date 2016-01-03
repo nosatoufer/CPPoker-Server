@@ -13,34 +13,38 @@ PokerController::~PokerController()
 
 bool PokerController::allIn(std::string name)
 {
-    if (game->getCurrentPlayerNickname() == name)
+    bool val = (game->getCurrentPlayerNickname() == name);
+    if (val)
         game->allIn();
 
-    return (game->getCurrentPlayerNickname() == name);
+    return val;
 }
 
 bool PokerController::bet(std::string name, unsigned int value)
 {
-    if (game->getCurrentPlayerNickname() == name)
+    bool val = (game->getCurrentPlayerNickname() == name);
+    if (val)
         game->bet(value);
 
-    return (game->getCurrentPlayerNickname() == name);
+    return val;
 }
 
 bool PokerController::fold(std::string name)
 {
-    if (game->getCurrentPlayerNickname() == name)
+    bool val = (game->getCurrentPlayerNickname() == name);
+    if (val)
         game->fold();
 
-    return (game->getCurrentPlayerNickname() == name);
+    return val;
 }
 
 bool PokerController::check(std::string name)
 {
-    if (game->getCurrentPlayerNickname() == name)
-        game->check();
+    bool val = (game->getCurrentPlayerNickname() == name);
+    if (val)
+    {}
 
-    return (game->getCurrentPlayerNickname() == name);
+    return val;
 }
 
 bool PokerController::isGameStarted() {

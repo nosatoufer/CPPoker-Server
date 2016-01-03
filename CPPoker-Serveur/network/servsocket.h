@@ -16,7 +16,9 @@ class ServerController;
 class ConnectionManager;
 class ServerManager;
 
-
+/**
+ * @brief The ServSocket class represent the server socket
+ */
 class ServSocket : public QObject
 {
     Q_OBJECT
@@ -30,6 +32,9 @@ public:
     virtual ~ServSocket();
 
 public slots:
+    /**
+     * @brief newConnection slot called when a client connect
+     */
     void newConnection();
 };
 

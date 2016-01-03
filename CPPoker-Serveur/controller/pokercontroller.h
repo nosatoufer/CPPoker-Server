@@ -14,15 +14,13 @@ protected:
 public:
     PokerController(unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind);
     virtual ~PokerController();
-
-    // Méthode de jeu
     bool allIn(std::string name);
     bool bet(std::string name, unsigned int value);
     bool fold(std::string name);
     bool check(std::string name);
     bool isPlayerInGame(std::string nickname);
 
-    // Ajouter un player-
+    // Ajouter un player
     bool addPlayer(std::string name);
 
     bool readyToStart();

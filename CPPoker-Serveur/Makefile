@@ -743,6 +743,8 @@ moc_connectionmanager.cpp: /opt/Qt5.5.0/5.5/gcc/include/QtNetwork/QTcpSocket \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		model/pokermanagerexception.h \
 		network/connectionmanager.h
 	/opt/Qt5.5.0/5.5/gcc/bin/moc $(DEFINES) -I/opt/Qt5.5.0/5.5/gcc/mkspecs/linux-g++-32 -I/home/nosa/CPPoker-Server/CPPoker-Serveur -I/opt/Qt5.5.0/5.5/gcc/include -I/opt/Qt5.5.0/5.5/gcc/include/QtWidgets -I/opt/Qt5.5.0/5.5/gcc/include/QtGui -I/opt/Qt5.5.0/5.5/gcc/include/QtNetwork -I/opt/Qt5.5.0/5.5/gcc/include/QtCore network/connectionmanager.h -o moc_connectionmanager.cpp
@@ -877,6 +879,8 @@ moc_servsocket.cpp: /opt/Qt5.5.0/5.5/gcc/include/QtNetwork/QTcpServer \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		network/utils.h \
 		network/request.h \
 		network/commands.h \
@@ -1015,6 +1019,8 @@ moc_pokerservergui.cpp: /opt/Qt5.5.0/5.5/gcc/include/QtWidgets/QMainWindow \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		network/utils.h \
 		network/request.h \
 		network/commands.h \
@@ -1155,6 +1161,8 @@ moc_servermanager.cpp: /opt/Qt5.5.0/5.5/gcc/include/QtCore/QThread \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		network/utils.h \
 		network/request.h \
 		network/commands.h \
@@ -1300,6 +1308,8 @@ moc_pokermanager.cpp: /opt/Qt5.5.0/5.5/gcc/include/QtCore/QThread \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		model/pokermanager.h
 	/opt/Qt5.5.0/5.5/gcc/bin/moc $(DEFINES) -I/opt/Qt5.5.0/5.5/gcc/mkspecs/linux-g++-32 -I/home/nosa/CPPoker-Server/CPPoker-Serveur -I/opt/Qt5.5.0/5.5/gcc/include -I/opt/Qt5.5.0/5.5/gcc/include/QtWidgets -I/opt/Qt5.5.0/5.5/gcc/include/QtGui -I/opt/Qt5.5.0/5.5/gcc/include/QtNetwork -I/opt/Qt5.5.0/5.5/gcc/include/QtCore model/pokermanager.h -o moc_pokermanager.cpp
 
@@ -1450,6 +1460,8 @@ main.o: main.cpp view/pokerservergui.h \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		network/utils.h \
 		network/request.h \
 		network/commands.h \
@@ -1596,6 +1608,8 @@ connectionmanager.o: network/connectionmanager.cpp network/connectionmanager.h \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		network/utils.h \
 		network/request.h \
 		network/commands.h \
@@ -1733,6 +1747,8 @@ servsocket.o: network/servsocket.cpp network/servsocket.h \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		network/utils.h \
 		network/request.h \
 		network/commands.h \
@@ -1871,6 +1887,8 @@ pokerservergui.o: view/pokerservergui.cpp view/pokerservergui.h \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		network/utils.h \
 		network/request.h \
 		network/commands.h \
@@ -1890,7 +1908,54 @@ pokergame.o: model/pokergame.cpp model/pokergame.h \
 		model/deck.h \
 		model/pokerplayer.h \
 		model/playerexception.h \
-		model/gamestate.h
+		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/QVector \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qvector.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qalgorithms.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qglobal.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qconfig.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qfeatures.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qsystemdetection.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qprocessordetection.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qcompilerdetection.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qtypeinfo.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qtypetraits.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qsysinfo.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qlogging.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qflags.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qbasicatomic.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_bootstrap.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qgenericatomic.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_cxx11.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_gcc.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_msvc.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_armv7.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_armv6.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_armv5.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_ia64.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_mips.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_x86.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qatomic_unix.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qglobalstatic.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qmutex.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qnumeric.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qiterator.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qlist.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qrefcount.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qarraydata.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qbytearraylist.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qbytearray.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qnamespace.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qstring.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qchar.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qstringbuilder.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qstringlist.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qregexp.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qstringmatcher.h \
+		/opt/Qt5.5.0/5.5/gcc/include/QtCore/qpoint.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokergame.o model/pokergame.cpp
 
 deck.o: model/deck.cpp model/deck.h \
@@ -2048,6 +2113,8 @@ servercontroller.o: controller/servercontroller.cpp controller/servercontroller.
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		network/utils.h \
 		network/request.h \
 		network/commands.h \
@@ -2187,6 +2254,8 @@ servermanager.o: network/servermanager.cpp network/servermanager.h \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		network/utils.h \
 		network/request.h \
 		network/commands.h \
@@ -2330,7 +2399,9 @@ pokercontroller.o: controller/pokercontroller.cpp controller/pokercontroller.h \
 		model/deck.h \
 		model/pokerplayer.h \
 		model/playerexception.h \
-		model/gamestate.h
+		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokercontroller.o controller/pokercontroller.cpp
 
 pokermanagerexception.o: model/pokermanagerexception.cpp model/pokermanagerexception.h
@@ -2471,6 +2542,8 @@ pokermanager.o: model/pokermanager.cpp model/pokermanager.h \
 		model/pokerplayer.h \
 		model/playerexception.h \
 		model/gamestate.h \
+		pattern/subject.h \
+		pattern/observer.h \
 		model/pokermanagerexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokermanager.o model/pokermanager.cpp
 

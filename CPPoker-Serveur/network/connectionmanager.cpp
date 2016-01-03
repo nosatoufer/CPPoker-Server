@@ -31,9 +31,14 @@ ConnectionManager::~ConnectionManager()
 
 void ConnectionManager::read()
 {
-    QString req(m_sock->readAll());
-    qDebug() << "Request received : " << req;
-    m_requests.insert(m_requests.begin(), new Request(req.toStdString()));
+    QRegExp rex("[|]");
+    QString s(m_sock->readAll());
+    QStringList list = s.split(rex, QString::SkipEmptyParts);
+    for(QString req : list)
+    {
+        qDebug() << "Request received : " << req;
+        m_requests.insert(m_requests.begin(), new Request(req.toStdString()));
+    }
     emit newRequest(this);
 }
 
@@ -48,7 +53,8 @@ void ConnectionManager::write(Request * req)
     if(m_sock->isOpen() && m_sock->isWritable())
     {
         std::string s = req->toString();
-        qDebug() << "SEND : " << QString::fromStdString(s);
+        s+="|";
+        qDebug() << "SEND " << QString::fromStdString(nickname) << " : " << QString::fromStdString(s);
         m_sock->write(s.c_str(), s.length());
     }
 }

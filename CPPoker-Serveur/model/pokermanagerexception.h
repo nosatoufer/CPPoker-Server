@@ -4,6 +4,9 @@
 #include <exception>
 #include <string>
 
+/**
+ * @brief The PokerManagerException class is an exception class for the PokerPlayer class
+ */
 class PokerManagerException : public std::exception
 {
 private:
@@ -13,6 +16,10 @@ public:
     PokerManagerException(std::string const& phrase) throw();
     virtual ~PokerManagerException() throw();
 
+    /**
+     * @brief what is an accessor to the error message
+     * @return error message that cause the exception
+     */
     virtual const char* what() const throw();
 };
 

@@ -68,10 +68,23 @@ protected:
      */
     virtual bool isNicknameAvailable(std::string name);
 
+    /**
+     * @brief sendRoomList sendRoomList to a client
+     * @param user client to sent the room list
+     * @param req to use for sending the roomList
+     */
     void sendRoomList(ConnectionManager* user, Request* req);
 
 public slots:
+    /**
+     * @brief clientDisconnected slot called when a client is disconnected
+     * @param cm client
+     */
     void clientDisconnected(ConnectionManager* cm);
+    /**
+     * @brief clientDisconnected slot called when a client recevied a request
+     * @param cm client
+     */
     void readRequest(ConnectionManager* cm);
 };
 

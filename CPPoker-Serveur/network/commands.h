@@ -39,7 +39,7 @@ const Command POKER_ROUND_THREE = 212;
 const Command POKER_CURRENT_PLAYER = 215;
 const Command POKER_BUTTON = 216;
 const Command POKER_SMALL_BLIND = 217;
-const Command POKER_BIG_BLIND = 217;
+const Command POKER_BIG_BLIND = 218;
 
 
 const Command POKER_GIVE_CARD = 240;

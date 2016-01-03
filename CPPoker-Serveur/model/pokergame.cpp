@@ -8,7 +8,7 @@ PokerGame::PokerGame(unsigned int minPlayer, unsigned int maxPlayer, unsigned in
     m_currentPlayer(0),
     m_minPlayer(minPlayer),
     m_maxPlayer(maxPlayer),
-    m_dealer(dealer),
+    m_dealerId(dealer),
     m_smallBlindValue(smallBlindValue),
     m_bigBlindValue(bigBlindValue),
     m_round(1),
@@ -47,7 +47,7 @@ PokerPlayer* PokerGame::getPlayer(std::string nickname) {
         if (player->getNickname() == nickname)
             return player;
     }
-    throw new GameException("Erreur lors de l'appel à getPlayer : le joueur n'est pas dans la partie.");
+    throw GameException("Erreur lors de l'appel à getPlayer : le joueur n'est pas dans la partie.");
 }
 
 std::string PokerGame::getCurrentPlayerNickname() {
@@ -76,7 +76,7 @@ void PokerGame::cancelGame() {
 
 
 void PokerGame::startGame() {
-    if (m_dealer >= this->m_players.size()) {
+    if (m_dealerId >= this->m_players.size()) {
         throw GameException("L'id du dealer est incorrect.");
     }
 
@@ -94,19 +94,11 @@ void PokerGame::startGame() {
 
     this->m_gameState = GameState::RUNNING;
 
-    this->setCurrentPlayerId(m_dealer);
+    this->setCurrentPlayerId(m_dealerId);
     // Si le nombre de joueur est égal à 2, le dealer fait office de small blind, il ne faut donc pas passer au joueur suivant
     if (this->m_players.size() > 2) {
         this->nextPlayer();
     }
-
-    // Mise obligatoire de la small blind et big blind (il faudra donc vérifier que chaque joueur rejoignant une room a au
-    // moins la somme de la big blind en cash).
-    this->getCurrentPlayer()->bet(this->m_smallBlindValue);
-    this->nextPlayer();
-    this->getCurrentPlayer()->bet(this->m_bigBlindValue);
-    this->nextPlayer();
-    this->m_biggestBet = this->m_bigBlindValue;
 }
 
 void PokerGame::bet(unsigned int amount=0) {
@@ -160,10 +152,14 @@ void PokerGame::check() {
         throw GameException("Erreur lors du check : la partie n'est pas en cours");
     }
 
+    if (this->m_round == 0) {
+        throw GameException("Erreur lors du check : impossible de check au premier tour.");
+    }
+
     // Un joueur peut checker (ne pas miser en restant dans la partie) seulement si aucun autre joueur n'a déjà misé
     for(unsigned int i=0; i<this->m_players.size(); ++i) {
         if (this->m_players[i] != 0) {
-            throw new GameException("Erreur lors du check : des joueurs ont déjà misés.");
+            throw GameException("Erreur lors du check : des joueurs ont déjà misés.");
         }
     }
 
@@ -179,11 +175,11 @@ void PokerGame::allIn() {
     unsigned int cash = this->getCurrentPlayer()->getCash();
     if (m_round >= 1 && m_round <= 2) {
         if (cash >= this->m_bigBlindValue) {
-            throw new GameException("Erreur lors du all-in : vous avez encore assez de cash pour miser !");
+            throw GameException("Erreur lors du all-in : vous avez encore assez de cash pour miser !");
         }
     } else if (m_round >= 3 && m_round <= 4) {
         if (cash >= (2*this->m_bigBlindValue)) {
-            throw new GameException("Erreur lors du all-in : vous avez encore assez d'argent pour miser !");
+            throw GameException("Erreur lors du all-in : vous avez encore assez d'argent pour miser !");
         }
     }
 
@@ -271,7 +267,7 @@ void PokerGame::nextPlayer() {
 
             this->putBetsInPot();
 
-            this->setCurrentPlayerId(m_dealer);
+            this->setCurrentPlayerId(m_dealerId);
             if (this->m_players.size() > 2) {
                 this->getNextPlayerId();
             }

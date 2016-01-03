@@ -18,6 +18,7 @@ PokerManager::~PokerManager()
 
 void PokerManager::manageRequest(ConnectionManager *player)
 {
+    try {
     Request* req = player->getRequest();
     switch(req->getCommand())
     {
@@ -35,10 +36,12 @@ void PokerManager::manageRequest(ConnectionManager *player)
             req->setStatus("STATUS_FAILLURE");
             player->write(req);
         }
+        break;
     case POKER_ALL_IN:
         if (m_mController->allIn(player->getNickname())) {
             req->setStatus("STATUS_SUCCESS");
-            player->write(req);
+            req->set("pName", player->getNickname());
+            sendToAll(req);
             this->sendCurrentPlayer();
         } else {
             req->setStatus("STATUS_FAILLURE");
@@ -48,7 +51,8 @@ void PokerManager::manageRequest(ConnectionManager *player)
     case POKER_BET:
         if (m_mController->bet(player->getNickname(), std::stoul(req->get("bet")))) {
             req->setStatus("STATUS_SUCCESS");
-            player->write(req);
+            req->set("pName", player->getNickname());
+            sendToAll(req);
             this->sendCurrentPlayer();
         } else {
             req->setStatus("STATUS_FAILLURE");
@@ -58,7 +62,8 @@ void PokerManager::manageRequest(ConnectionManager *player)
     case POKER_FOLD:
         if (m_mController->fold(player->getNickname())) {
             req->setStatus("STATUS_SUCCESS");
-            player->write(req);
+            req->set("pName", player->getNickname());
+            sendToAll(req);
             this->sendCurrentPlayer();
         } else {
             req->setStatus("STATUS_FAILLURE");
@@ -68,7 +73,8 @@ void PokerManager::manageRequest(ConnectionManager *player)
     case POKER_CHECK:
         if (m_mController->check(player->getNickname())) {
             req->setStatus("STATUS_SUCCESS");
-            player->write(req);
+            req->set("pName", player->getNickname());
+            sendToAll(req);
             this->sendCurrentPlayer();
         } else {
             req->setStatus("STATUS_FAILLURE");
@@ -83,6 +89,9 @@ void PokerManager::manageRequest(ConnectionManager *player)
 
     }
     delete req;
+    } catch (std::exception &e) {
+        qDebug() << e.what();
+    }
 }
 
 void PokerManager::sendCardsToPlayers()
@@ -122,23 +131,24 @@ void PokerManager::addPlayer(ConnectionManager *player)
     req->setCommand(PLAYER_JOINED);
     req->set("pName",player->getNickname());
     sendToAll(req);
+    delete req;
+
     m_players.append(player);
     player->serverToRoom(this);
     m_mController->addPlayer(player->getNickname());
 
-    req = new Request();
-    req->setCommand(PLAYER_JOINED);
     qDebug() << m_players.size();
     for(ConnectionManager * p : m_players)
     {
+        Request req;
+        req.setCommand(PLAYER_JOINED);
         qDebug() << QString::fromStdString(player->getNickname());
         qDebug() << QString::fromStdString(p->getNickname());
-        req->set("pName",p->getNickname());
+        req.set("pName",p->getNickname());
         qDebug() << "Coucou";
-        player->write(req);
+        player->write(&req);
         qDebug() << "Coucou";
     }
-    delete req;
 }
 
 bool PokerManager::remPlayer(ConnectionManager *player)
