@@ -1,14 +1,16 @@
 #include "connectionmanager.h"
 #include <QDebug>
 
-ConnectionManager::ConnectionManager(QTcpSocket *newClient) : //, ServSocket *servSocket) :
+ConnectionManager::ConnectionManager(QTcpSocket *newClient, ServerManager* sm) :
     m_sock(newClient),
-    //servSocket(servSocket),
+    mutex(),
+    m_requests(),
     nickname("guest")
 {
     qDebug() << "Client connected";
     connect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
     connect(m_sock, SIGNAL(readyRead()), this, SLOT(read()));
+    connect(this, SIGNAL(clientDisconnected(ConnectionManager*)), sm, SLOT(clientDisconnected(ConnectionManager*)));
 
     Request * req = new Request();
     req->setCommand(LOGIN);
@@ -19,7 +21,7 @@ ConnectionManager::ConnectionManager(QTcpSocket *newClient) : //, ServSocket *se
 ConnectionManager::~ConnectionManager()
 {
     disconnect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    disconnect(m_sock, SIGNAL(readyRead()), this, SLOT(read));
+    disconnect(m_sock, SIGNAL(readyRead()), this, SLOT(read()));
     m_sock->close();
     delete m_sock;
     for(Request * req : m_requests)
@@ -29,39 +31,17 @@ ConnectionManager::~ConnectionManager()
 
 void ConnectionManager::read()
 {
-    m_requests.insert(m_requests.begin(), new Request(m_sock->readAll().toStdString()));
-    notify();
-    /**
-    Request request((QString(m_sock->readAll())).toStdString());
-    switch (request.getCommand()) {
-        case LOGIN:
-            if (request.isSet("nickname")) {
-                if (servSocket->nicknameAvailable(request.get("nickname"))) {
-                    request.setStatus(Request::STATUS_SUCCESS);
-                    this->nickname = request.get("nickname");
-                    this->write(request.toString());
-                    qDebug() << "LOGIN_3";
-                } else {
-                    request.setStatus(Request::STATUS_FAILURE);
-                    this->write(request.toString());
-                    qDebug() << "LOGIN_2";
-                }
-            } else {
-                request.setStatus(Request::STATUS_FAILURE);
-                this->write(request.toString());
-                qDebug() << "LOGIN_1";
-            }
-        break;
-        default:
-            qDebug() << "Unknown command";
-        break;
-    }
-    */
+    //mutex.lock();
+    QString req(m_sock->readAll());
+    qDebug() << "Request received : " << req;
+    m_requests.insert(m_requests.begin(), new Request(req.toStdString()));
+    //mutex.unlock();
 }
 
 void ConnectionManager::disconnected()
 {
     qDebug() << "Client disconnected";
+    emit clientDisconnected(this);
 }
 
 void ConnectionManager::write(Request * req)
@@ -71,6 +51,7 @@ void ConnectionManager::write(Request * req)
         std::string s = req->toString();
         qDebug() << "SEND : " << QString::fromStdString(s);
         m_sock->write(s.c_str(), s.length());
+        //qDebug() << "SENT" << QString::fromStdString(s);
     }
 }
 
@@ -86,12 +67,22 @@ std::string ConnectionManager::getNickname()
 
 bool ConnectionManager::hasRequests()
 {
-    return m_requests.size() != 0;
+    //qDebug() << "Enter hasRequests";
+    //mutex.lock();
+    //qDebug() << "Middle hasRequests";
+    bool returnValue = (m_requests.size() != 0);
+    //qDebug() << "Exiting hasRequests";
+    //mutex.unlock();
+    return returnValue;
 }
 
 Request * ConnectionManager::getRequest()
 {
+    //mutex.lock();
+    //qDebug() << "Entering getRequests";
     Request * req = m_requests.back();
     m_requests.pop_back();
+    //qDebug() << "Exiting getRequests";
+    //mutex.unlock();
     return req;
 }

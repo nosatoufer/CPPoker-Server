@@ -1,9 +1,10 @@
 #include "roommanager.h"
 
-RoomManager::RoomManager(QString name) :
-    m_name(name)
+RoomManager::RoomManager(QString name, unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind) :
+    m_name(name),
+    m_players()
 {
-    m_mController = new ModelController();
+    m_mController = new PokerController(minPlayer, maxPlayer, smallBlind, bigBlind);
 }
 
 RoomManager::~RoomManager()
@@ -15,11 +16,29 @@ RoomManager::~RoomManager()
 
 void RoomManager::run()
 {
+    while(true)
+    {
+        for(ConnectionManager* user : m_players)
+        {
+            //qDebug() << "Analyzing client requests";
+            if (user->hasRequests())
+            {
+                // qDebug() << "Has request";
+                this->manageRequest(user);
+            } else {
+                // qDebug() << "No request";
+            }
+        }
+        if (this->m_mController->readyToStart()) {
+            this->m_mController->startGame();
+        }
+    }
     //m_mController.startGame();
 }
 
-void RoomManager::readRequest(ConnectionManager *player, Request *req)
+void RoomManager::manageRequest(ConnectionManager *player)
 {
+    Request* req = player->getRequest();
     switch(req->getCommand())
     {
     case POKER_ALL_IN:
@@ -95,15 +114,21 @@ void RoomManager::addPlayer(ConnectionManager *player)
 
 bool RoomManager::remPlayer(ConnectionManager *player)
 {
-    if (m_players.removeOne(player))
+    int i = m_players.indexOf(player);
+    if (i != -1)
     {
+        if (m_mController->isPlayerInGame(player->getNickname())) {
+            m_mController->cancelGame();
+        }
+        m_players.remove(i);
         Request * req = new Request();
         req->setCommand(PLAYER_LEFT);
         req->setMessage(player->getNickname());
         sendToAll(req);
         delete player;
+        return true;
     }
-
+    return false;
 }
 
 QString RoomManager::name() const
@@ -116,11 +141,15 @@ int RoomManager::nbPlayer() const
     return m_players.size();
 }
 
-bool RoomManager::checkName(std::string pName) const
+bool RoomManager::isNicknameAvailable(std::string pName) const
 {
     int i = 0;
-    while( i < m_players.size() && m_players.at(i++)->getNickname() != pName );
-    return i < m_players.size();
+    bool find = false;
+    while(!find && i < m_players.size()) {
+        find = (m_players[i]->getNickname() == pName);
+        ++i;
+    }
+    return !find;
 }
 
 QVector<std::string> RoomManager::playerName() const
@@ -142,11 +171,22 @@ void RoomManager::netUpdate()
     {
         if(player->hasRequests())
         {
-            readRequest(player, player->getRequest());
+            //readRequest(player, player->getRequest());
         }
     }
 
 }
 
+std::string RoomManager::toString()
+{
+    std::map<std::string, std::string> map;
+    map["name"] = this->m_name.toStdString();
+    map["minPlayer"] = std::to_string(this->m_mController->getMinPlayer());
+    map["maxPlayer"] = std::to_string(this->m_mController->getMaxPlayer());
+    map["smallBlind"] = std::to_string(this->m_mController->getSmallBlind());
+    map["bigBlind"] = std::to_string(this->m_mController->getBigBlind());
+    map["currentPlayer"] = std::to_string(this->m_players.size());
+    return jsonEncode(map);
+}
 
 

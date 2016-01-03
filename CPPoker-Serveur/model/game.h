@@ -30,9 +30,12 @@ public:
     virtual void setCurrentPlayerId(unsigned int number);
 
     virtual Player* getCurrentPlayer();
+    virtual std::vector<Player*> getPlayers();
     virtual unsigned int getCurrentPlayerId();
 
     virtual GameState getGameState();
+    void cancelGame();
+    void addPlayer(Player* player);
 };
 
 #endif // GAME_H

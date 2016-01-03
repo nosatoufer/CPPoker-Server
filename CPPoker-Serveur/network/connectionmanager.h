@@ -9,6 +9,10 @@
 #include "../network/servsocket.h"
 #include "../pattern/netsubject.h"
 #include "request.h"
+#include "servermanager.h"
+#include <exception>
+#include <QMutex>
+#include <QMutexLocker>
 
 /*
 class ServSocket;
@@ -18,14 +22,13 @@ class ConnectionManager : public QObject, public NetSubject
     Q_OBJECT
 private:
     QTcpSocket *m_sock;
-    //ServSocket *servSocket;
-    std::string nickname;
+    QMutex mutex;
     std::vector<Request *> m_requests;
+    std::string nickname;
 
 public:
-    ConnectionManager(QTcpSocket* newClient);
+    ConnectionManager(QTcpSocket* newClient, ServerManager* sm);
     ~ConnectionManager();
-    //ConnectionManager(QTcpSocket* newClient, ServSocket* serv);
     /**
      * @brief write writes a request to the socket
      * @param req the request to send
@@ -59,6 +62,9 @@ public:
 public slots:
     void read();
     void disconnected();
+
+signals:
+    void clientDisconnected(ConnectionManager* cm);
 };
 
 #endif // CONNECTIONMANAGER_H

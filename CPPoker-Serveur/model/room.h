@@ -4,7 +4,6 @@
 #include <vector>
 #include "player.h"
 #include "game.h"
-#include "../controller/modelcontroller.h"
 
 class Game;
 class ModelController;
@@ -20,7 +19,7 @@ protected:
 
     Game* game;
 
-    ModelController* controller;
+    //ModelController* controller;
 
 public:
     Room(unsigned int minPlayer, unsigned int maxPlayer, std::string name = "", std::vector<Player*> players = std::vector<Player*>());
@@ -29,9 +28,19 @@ public:
 
     virtual Game* startGame() = 0;
 
-    bool checkNumberOfPlayer();
+    virtual bool checkNumberOfPlayer();
 
-    void attachController(ModelController* controller);
+    virtual unsigned int getMinPlayer();
+
+    virtual unsigned int getMaxPlayer();
+
+    virtual bool readyToStart();
+
+    virtual Game* getGame();
+
+    virtual void cancelGame();
+
+    //void attachController(ModelController* controller);
 };
 
 #endif // ROOM_H

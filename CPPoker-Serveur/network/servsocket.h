@@ -25,22 +25,11 @@ class ServSocket : public QObject
 private:
     QTcpServer* m_serv;
     ServerManager * m_servManager;
-    /*
-    QTcpSocket* m_sock;
-    std::vector<ConnectionManager*> m_player;    
-    Controller* controller;
-    ServerController* serverController;
-    std::vector<ModelController*> modelController;
-    */
+
 public:
     explicit ServSocket(QObject *parent = 0);
     ~ServSocket();
-/*
-    bool nicknameAvailable(std::string nickname);
-    void attachController(Controller* controller);
-    void attachController(ModelController* controller);
-    void attachController(ServerController* controller);
-    */
+
 public slots:
     void newConnection();
 };

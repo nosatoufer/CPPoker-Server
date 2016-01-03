@@ -18,6 +18,9 @@ public:
     PokerRoom(unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlindValue, unsigned int bigBlindValue, std::string name = "", std::vector<Player*> players = std::vector<Player*>());
 
     Game* startGame();
+
+    unsigned int getSmallBlind();
+    unsigned int getBigBlind();
 };
 
 #endif // POKERROOM_H
