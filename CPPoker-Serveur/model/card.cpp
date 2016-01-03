@@ -35,7 +35,7 @@ std::string Card::toString() const {
         case Card::FIVE: value +=  "FIVE"; break;
         case Card::SIX: value += "SIX"; break;
         case Card::SEVEN: value += "SEVEN"; break;
-        case Card::HEIGHT: value += "HEIGHT"; break;
+        case Card::HEIGHT: value += "EIGHT"; break;
         case Card::NINE: value += "NINE"; break;
         case Card::TEN: value += "TEN"; break;
         case Card::JACK: value += "JACK"; break;
@@ -43,6 +43,7 @@ std::string Card::toString() const {
         case Card::KING: value += "KING"; break;
         default : value += "ERR"; break;
     }
+    return value;
 }
 
 std::ostream& operator<<(std::ostream& os, Card card) {

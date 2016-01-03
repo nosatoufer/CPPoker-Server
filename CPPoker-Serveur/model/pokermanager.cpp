@@ -26,28 +26,54 @@ void PokerManager::manageRequest(ConnectionManager *player)
             m_mController->startGame();
             req->setStatus("STATUS_SUCCESS");
 
+            this->sendToAll(req);
+
             this->sendCardsToPlayers();
 
+            this->sendCurrentPlayer();
         } else {
             req->setStatus("STATUS_FAILLURE");
+            player->write(req);
         }
     case POKER_ALL_IN:
-        if (m_mController->allIn(player->getNickname()))
+        if (m_mController->allIn(player->getNickname())) {
             req->setStatus("STATUS_SUCCESS");
-        else
+            player->write(req);
+            this->sendCurrentPlayer();
+        } else {
             req->setStatus("STATUS_FAILLURE");
+            player->write(req);
+        }
         break;
     case POKER_BET:
-        if (m_mController->bet(player->getNickname(), std::stoul(req->get("bet"))))
+        if (m_mController->bet(player->getNickname(), std::stoul(req->get("bet")))) {
             req->setStatus("STATUS_SUCCESS");
-        else
+            player->write(req);
+            this->sendCurrentPlayer();
+        } else {
             req->setStatus("STATUS_FAILLURE");
+            player->write(req);
+        }
         break;
     case POKER_FOLD:
-        if (m_mController->fold(player->getNickname()))
+        if (m_mController->fold(player->getNickname())) {
             req->setStatus("STATUS_SUCCESS");
-        else
+            player->write(req);
+            this->sendCurrentPlayer();
+        } else {
             req->setStatus("STATUS_FAILLURE");
+            player->write(req);
+        }
+        break;
+    case POKER_CHECK:
+        if (m_mController->check(player->getNickname())) {
+            req->setStatus("STATUS_SUCCESS");
+            player->write(req);
+            this->sendCurrentPlayer();
+        } else {
+            req->setStatus("STATUS_FAILLURE");
+            player->write(req);
+        }
         break;
     case DISCONNECT:
         remPlayer(player);
@@ -56,15 +82,7 @@ void PokerManager::manageRequest(ConnectionManager *player)
         req->setStatus("STATUS_FAILLURE");
 
     }
-    if (req->getStatus() == "STATUS_SUCCESS")
-    {
-        sendToAll(req);
-    }
-    else
-    {
-        player->write(req);
-        delete req;
-    }
+    delete req;
 }
 
 void PokerManager::sendCardsToPlayers()
@@ -84,11 +102,18 @@ void PokerManager::sendCardsToPlayers()
     }
 }
 
+void PokerManager::sendCurrentPlayer()
+{
+    Request req;
+    req.setCommand(POKER_CURRENT_PLAYER);
+    req.set("pName", this->m_mController->getCurrentPlayerNickname());
+    this->sendToAll(&req);
+}
+
 void PokerManager::sendToAll(Request *req)
 {
     for(ConnectionManager* p : m_players)
         p->write(req);
-    delete req;
 }
 
 void PokerManager::addPlayer(ConnectionManager *player)

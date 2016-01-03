@@ -1,86 +1,86 @@
 #include "pokerplayer.h"
 
 PokerPlayer::PokerPlayer(std::string nickname, int cash) :
-    nickname(nickname),
-    cash(cash),
-    hand(),
-    currentBet(0),
-    totalBet(0),
-    fold(false),
-    allIn(false)
+    m_nickname(nickname),
+    m_cash(cash),
+    m_hand(),
+    m_currentBet(0),
+    m_totalBet(0),
+    m_fold(false),
+    m_allIn(false)
 {}
 
 int PokerPlayer::getCash() {
-    return this->cash;
+    return this->m_cash;
 }
 
 void PokerPlayer::setCash(int cash) {
-    this->cash = cash;
+    this->m_cash = cash;
 }
 
 std::string PokerPlayer::getNickname() {
-    return this->nickname;
+    return this->m_nickname;
 }
 
 void PokerPlayer::setNickname(std::string nickname) {
-    this->nickname = nickname;
+    this->m_nickname = nickname;
 }
 
 std::vector<Card*> PokerPlayer::getHand() {
-    return this->hand;
+    return this->m_hand;
 }
 
 void PokerPlayer::addCard(Card* card) {
-    this->hand.push_back(card);
+    this->m_hand.push_back(card);
 }
 
 
 void PokerPlayer::resetCurrentBet() {
-    this->totalBet += currentBet;
-    this->currentBet = 0;
+    this->m_totalBet += m_currentBet;
+    this->m_currentBet = 0;
 }
 
 unsigned int PokerPlayer::getCurrentBet() {
-    return this->currentBet;
+    return this->m_currentBet;
 }
 
 void PokerPlayer::reduceBetTo(unsigned int amount) {
-    if (this->currentBet < amount) {
+    if (this->m_currentBet < amount) {
         throw PlayerException("Impossible de ''réduire'' la mise à une valeur supérieure à la somme déjà misée.");
     }
-    this->cash += (this->currentBet-amount);
-    this->currentBet = amount;
+    this->m_cash += (this->m_currentBet-amount);
+    this->m_currentBet = amount;
 }
 
 unsigned int PokerPlayer::bet(unsigned int amount) {
-    if (amount > cash) {
+    if (amount > m_cash) {
         throw PlayerException("Les liquidités sont insuffisantes pour parier un tel montant.");
     }
-    this->currentBet += amount;
-    this->cash -= amount;
-    return this->currentBet;
+    this->m_currentBet += amount;
+    this->m_cash -= amount;
+    return this->m_currentBet;
 }
 
 void PokerPlayer::setFold(bool value) {
-    this->fold = value;
+    this->m_fold = value;
 }
 
 bool PokerPlayer::isFold() {
-    return this->fold;
+    return this->m_fold;
 }
 
 void PokerPlayer::setAllIn(bool value) {
-    this->allIn = value;
+    this->m_allIn = value;
 }
 
 bool PokerPlayer::isAllIn() {
-    return this->allIn;
+    return this->m_allIn;
 }
 
 void PokerPlayer::resetTotalBet() {
-    this->totalBet = 0;
+    this->m_totalBet = 0;
 }
 
 unsigned int PokerPlayer::getTotalBet() {
-    return this->totalBet;
+    return this->m_totalBet;
 }

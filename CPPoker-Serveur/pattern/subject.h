@@ -14,8 +14,6 @@ public:
     void addObserver(Observer * obs);
     void remObserver(Observer * obs);
     void notify();
-
-
 };
 
 #endif // SUBJECT_H

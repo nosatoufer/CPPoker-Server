@@ -41,6 +41,7 @@ public slots:
     void clientDisconnected(ConnectionManager *cm);
 
 protected:
+    void sendCurrentPlayer();
     void sendCardsToPlayers();
     void manageRequest(ConnectionManager * player);
     void sendToAll(Request * req);

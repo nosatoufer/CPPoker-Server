@@ -3,6 +3,7 @@
 PokerController::PokerController(unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind)
 {
     game = new PokerGame(minPlayer, maxPlayer, smallBlind, bigBlind);
+    this->game->addObserver(this);
 }
 
 PokerController::~PokerController()
@@ -30,6 +31,14 @@ bool PokerController::fold(std::string name)
 {
     if (game->getCurrentPlayerNickname() == name)
         game->fold();
+
+    return (game->getCurrentPlayerNickname() == name);
+}
+
+bool PokerController::check(std::string name)
+{
+    if (game->getCurrentPlayerNickname() == name)
+        game->check();
 
     return (game->getCurrentPlayerNickname() == name);
 }
@@ -87,7 +96,12 @@ unsigned int PokerController::getBigBlind()
     return this->game->getBigBlind();
 }
 
+std::string PokerController::getCurrentPlayerNickname()
+{
+    return this->game->getCurrentPlayerNickname();
+}
+
 void PokerController::update()
 {
-    //
+
 }

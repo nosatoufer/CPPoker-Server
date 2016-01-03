@@ -10,23 +10,23 @@
 class PokerPlayer
 {
 protected:
-    std::string nickname;
-    int cash;
-    std::vector<Card*> hand;
-    unsigned int currentBet; // Mise du tour actuel
-    unsigned int totalBet; // Montant misé depuis le début d'une partie
+    std::string m_nickname;
+    int m_cash;
+    std::vector<Card*> m_hand;
+    unsigned int m_currentBet; // Mise du tour actuel
+    unsigned int m_totalBet; // Montant misé depuis le début d'une partie
 
-    bool fold; // Le joueur est-il couché
-    bool allIn; // Le joueur est-il parti en all-in
+    bool m_fold; // Le joueur est-il couché
+    bool m_allIn; // Le joueur est-il parti en all-in
 
 public:
-    PokerPlayer(std::string nickname, int cash=0);
+    PokerPlayer(std::string m_nickname, int m_cash=0);
 
     int getCash();
-    void setCash(int cash);
+    void setCash(int m_cash);
 
     std::string getNickname();
-    void setNickname(std::string nickname);
+    void setNickname(std::string m_nickname);
 
     std::vector<Card*> getHand();
     void addCard(Card* card);

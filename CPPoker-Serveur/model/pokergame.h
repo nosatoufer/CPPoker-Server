@@ -6,31 +6,35 @@
 #include "deck.h"
 #include "pokerplayer.h"
 #include "gamestate.h"
+#include "../pattern/subject.h"
 
-class PokerGame
+class PokerGame : public Subject
 {
 protected:
-    std::vector<Card*> tableCard;
+    std::vector<PokerPlayer*> m_players;
 
-    Deck deck;
-    std::vector<PokerPlayer*> players;
+    std::vector<Card*> m_tableCard;
 
-    GameState gameState;
+    Deck m_deck;
 
-    unsigned int currentPlayer;
+    GameState m_gameState;
 
-    unsigned int minPlayer;
-    unsigned int maxPlayer;
-    unsigned int dealer; // Id du dealer
-    unsigned int smallBlindValue; // Id small blind
-    unsigned int bigBlindValue; // Id big blind
-    unsigned int round; // Id round (1 -> 4); 5 = fini
-    unsigned int biggestBet; // Utile pour vérifier que les joueurs s'alignent sur la même mise à chaque tour
-    unsigned int numberOfTurn; // Utile pour vérifier la fin d'un round : il faut que chaque joueur aie joué une fois (check ou bet) et qu'ils aient tous la même mise
-    unsigned int pot; // Contient le montant total mis en jeu
+    unsigned int m_currentPlayer;
+
+    unsigned int m_minPlayer;
+    unsigned int m_maxPlayer;
+    unsigned int m_dealer;
+    unsigned int m_smallBlindValue;
+    unsigned int m_bigBlindValue;
+    unsigned int m_round;
+    unsigned int m_biggestBet;
+    unsigned int m_numberOfTurn;
+    unsigned int m_pot;
 
 public:
-    PokerGame(unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlindValue = 0, unsigned int bigBlindValue = 0, std::vector<PokerPlayer*> players = std::vector<PokerPlayer*>(), unsigned int dealer = 0);
+    PokerGame(unsigned int m_minPlayer, unsigned int m_maxPlayer, unsigned int m_smallBlindValue = 0, unsigned int m_bigBlindValue = 0, std::vector<PokerPlayer*> players = std::vector<PokerPlayer*>(), unsigned int m_dealer = 0);
+
+    virtual ~PokerGame();
 
     virtual void startGame();
 
@@ -43,7 +47,6 @@ public:
     virtual std::string getCurrentPlayerNickname();
 
     virtual bool readyToStart();
-
 
     virtual GameState getGameState();
     void cancelGame();

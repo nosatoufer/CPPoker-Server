@@ -4,10 +4,9 @@
 #include "../view/pokerservergui.h"
 #include "../network/servsocket.h"
 #include "../model/pokergame.h"
+#include "../pattern/observer.h"
 
-class PokerRoom;
-
-class PokerController
+class PokerController : public Observer
 {
 protected:
     PokerGame* game;
@@ -15,22 +14,22 @@ protected:
 public:
     PokerController(unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind);
     virtual ~PokerController();
-    PokerController(PokerRoom* room);
 
-    // TODO :
-    // Les différentes option de jeu d'un joueur
+    // Méthode de jeu
     bool allIn(std::string name);
     bool bet(std::string name, unsigned int value);
     bool fold(std::string name);
+    bool check(std::string name);
     bool isPlayerInGame(std::string nickname);
 
-    // Ajoute un player quand la room ajoute un joueur
+    // Ajouter un player-
     bool addPlayer(std::string name);
 
     bool readyToStart();
     void startGame();
     void cancelGame();
     bool isGameStarted();
+    std::string getCurrentPlayerNickname();
     std::pair<std::string, std::string> getPlayerCards(std::string nickname);
 
     unsigned int getMinPlayer();
