@@ -6,12 +6,13 @@ ConnectionManager::ConnectionManager(QTcpSocket *newClient, ServerManager* sm) :
     m_requests(),
     nickname("guest")
 {
-    qDebug() << "Client connected";
+    qDebug() << "Client connecting";
     connect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
     connect(m_sock, SIGNAL(readyRead()), this, SLOT(read()));
     connect(this, SIGNAL(clientDisconnected(ConnectionManager*)), sm, SLOT(clientDisconnected(ConnectionManager*)));
     connect(this, SIGNAL(newRequest(ConnectionManager*)), sm, SLOT(readRequest(ConnectionManager*)));
-    qDebug() << "Client connect connected";
+    qDebug() << "Client connected";
+
     Request * req = new Request();
     req->setCommand(LOGIN);
     this->write(req);
@@ -22,25 +23,18 @@ ConnectionManager::~ConnectionManager()
 {
     qDebug() << "~ConnectionManager()";
     this->disconnect();
-    //disconnect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    //disconnect(m_sock, SIGNAL(readyRead()), this, SLOT(read()));
-    //m_sock->readAll();
-    //m_sock->close();
     delete m_sock;
     for(Request * req : m_requests)
         delete req;
-    qDebug() << "~ConnectionManager 2";
-
+    qDebug() << "~ConnectionManager() 2";
 }
 
 void ConnectionManager::read()
 {
-    //mutex.lock();
     QString req(m_sock->readAll());
     qDebug() << "Request received : " << req;
     m_requests.insert(m_requests.begin(), new Request(req.toStdString()));
     emit newRequest(this);
-    //mutex.unlock();
 }
 
 void ConnectionManager::disconnected()
@@ -56,7 +50,6 @@ void ConnectionManager::write(Request * req)
         std::string s = req->toString();
         qDebug() << "SEND : " << QString::fromStdString(s);
         m_sock->write(s.c_str(), s.length());
-        //qDebug() << "SENT" << QString::fromStdString(s);
     }
 }
 
@@ -73,23 +66,13 @@ std::string ConnectionManager::getNickname()
 
 bool ConnectionManager::hasRequests()
 {
-    //qDebug() << "Enter hasRequests";
-    //mutex.lock();
-    //qDebug() << "Middle hasRequests";
-    bool returnValue = (m_requests.size() != 0);
-    //qDebug() << "Exiting hasRequests";
-    //mutex.unlock();
-    return returnValue;
+    return (m_requests.size() != 0);
 }
 
 Request * ConnectionManager::getRequest()
 {
-    //mutex.lock();
-    qDebug() << "Entering getRequests";
     Request * req = m_requests.back();
     m_requests.pop_back();
-    //qDebug() << "Exiting getRequests";
-    //mutex.unlock();
     return req;
 }
 
@@ -98,12 +81,10 @@ void ConnectionManager::close()
     m_sock->close();
 }
 
-void ConnectionManager::serverToRoom(RoomManager *room)
+void ConnectionManager::serverToRoom(PokerManager *room)
 {
-
-    disconnect(this, SIGNAL(clientDisconnected(ConnectionManager*)));
-    disconnect(this, SIGNAL(newRequest(ConnectionManager*)));
-
+    disconnect(this, SIGNAL(clientDisconnected(ConnectionManager*)), 0, 0);
+    disconnect(this, SIGNAL(newRequest(ConnectionManager*)), 0, 0);
 
     connect(this, SIGNAL(clientDisconnected(ConnectionManager*)), room, SLOT(clientDisconnected(ConnectionManager*)));
     connect(this, SIGNAL(newRequest(ConnectionManager*)), room, SLOT(readRequest(ConnectionManager*)));

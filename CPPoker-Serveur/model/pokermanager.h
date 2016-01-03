@@ -7,17 +7,16 @@
 #include "controller/pokercontroller.h"
 #include "network/connectionmanager.h"
 #include "network/utils.h"
-#include "pattern/netobserver.h"
-#include "pattern/observer.h"
 #include "network/request.h"
 #include "network/commands.h"
-#include "roommanagerexception.h"
+#include "pokermanagerexception.h"
 
 class ConnectionManager;
 class PokerController;
 
-class RoomManager : public QThread, public Observer, public NetObserver
+class PokerManager : public QObject
 {
+Q_OBJECT
 private:
     PokerController * m_mController;
     QVector<ConnectionManager *> m_players;
@@ -25,8 +24,8 @@ private:
     QString m_name;
 
 public:
-    RoomManager(QString name, unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind);
-    ~RoomManager();
+    PokerManager(QString name, unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind);
+    ~PokerManager();
 
     void addPlayer(ConnectionManager * player);
     bool remPlayer(ConnectionManager * player);
@@ -37,15 +36,12 @@ public:
     QVector<std::string> playerName() const;
     std::string toString();
 
-    void update();
-    void netUpdate();
-
 public slots:
     void readRequest(ConnectionManager *cm);
     void clientDisconnected(ConnectionManager *cm);
 
-private:
-    void run();
+protected:
+    void sendCardsToPlayers();
     void manageRequest(ConnectionManager * player);
     void sendToAll(Request * req);
 };

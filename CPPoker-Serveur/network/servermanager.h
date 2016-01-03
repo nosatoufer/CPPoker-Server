@@ -5,28 +5,28 @@
 #include <QVector>
 #include "connectionmanager.h"
 #include "servsocket.h"
-#include "model/roommanager.h"
+#include "../model/pokermanager.h"
 
 class ConnectionManager;
-class RoomManager;
 class Request;
+class ServerController;
+class PokerManager;
 
-class ServerManager : public QThread
+class ServerManager : public QObject
 {
     Q_OBJECT
 protected:
     QVector<ConnectionManager*> m_users;
+    QVector<PokerManager*> m_rooms;
+    ServerController* m_servController;
     ConnectionManager* m_disc;
-    QVector<RoomManager*> m_rooms;
-    QString m_logs;
 
 public:
-    ServerManager();
+    ServerManager(ServerController* servController);
     virtual ~ServerManager();
     virtual void addUser(ConnectionManager* user);
 
 protected:
-    virtual void run();
     /**
      * @brief manageRequest reads the request command and dispatch to the appropriate function
      * @param user the user who sent the request

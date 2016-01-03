@@ -5,10 +5,8 @@
 #include <QMap>
 #include <vector>
 
-#include "../model/player.h"
-#include "../model/roommanager.h"
+#include "../model/pokermanager.h"
 #include "../network/servsocket.h"
-#include "../pattern/netsubject.h"
 #include "request.h"
 #include "servermanager.h"
 #include <exception>
@@ -18,12 +16,11 @@
 /*
 class ServSocket;
 */
-class ConnectionManager : public QObject, public NetSubject
+class ConnectionManager : public QObject
 {
     Q_OBJECT
 private:
     QTcpSocket *m_sock;
-    QMutex mutex;
     std::vector<Request *> m_requests;
     std::string nickname;
 
@@ -65,7 +62,7 @@ public:
      */
     void close();
 
-    void serverToRoom(RoomManager* room);
+    void serverToRoom(PokerManager* room);
 public slots:
     void read();
     void disconnected();

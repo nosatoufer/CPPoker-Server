@@ -3,21 +3,23 @@
 
 #include "../view/pokerservergui.h"
 #include "../network/servsocket.h"
-#include "../pattern/observer.h"
-#include "../model/game.h"
 
 class PokerServerGui;
 class ServSocket;
 
-class ServerController : public Observer
+class ServerController
 {
 protected:
-    PokerServerGui* view;
-    ServSocket* serv;
+    PokerServerGui* m_view;
+    ServSocket* m_serv;
 
 public:
-    ServerController(PokerServerGui* w, ServSocket* serv);
-    void update();
+    ServerController(PokerServerGui* w = nullptr, ServSocket* serv = nullptr);
+
+    virtual void attachView(PokerServerGui* view);
+    virtual void attachServer(ServSocket* serv);
+
+    virtual void addLog(std::string log);
 };
 
 #endif // SERVERCONTROLLER_H

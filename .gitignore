@@ -17,6 +17,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Pro user
+*.pro.user*
+
 # =========================
 # Operating System Files
 # =========================

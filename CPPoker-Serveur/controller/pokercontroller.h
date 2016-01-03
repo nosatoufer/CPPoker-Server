@@ -3,16 +3,14 @@
 
 #include "../view/pokerservergui.h"
 #include "../network/servsocket.h"
-#include "../pattern/observer.h"
-#include "../model/game.h"
-#include "../model/pokerroom.h"
+#include "../model/pokergame.h"
 
 class PokerRoom;
 
-class PokerController : public Observer
+class PokerController
 {
 protected:
-    PokerRoom* model;
+    PokerGame* game;
 
 public:
     PokerController(unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind);
@@ -22,9 +20,7 @@ public:
     // TODO :
     // Les différentes option de jeu d'un joueur
     bool allIn(std::string name);
-    bool call(std::string name);
-    bool check(std::string name);
-    bool raise(std::string name);
+    bool bet(std::string name, unsigned int value);
     bool fold(std::string name);
     bool isPlayerInGame(std::string nickname);
 
@@ -34,6 +30,8 @@ public:
     bool readyToStart();
     void startGame();
     void cancelGame();
+    bool isGameStarted();
+    std::pair<std::string, std::string> getPlayerCards(std::string nickname);
 
     unsigned int getMinPlayer();
     unsigned int getMaxPlayer();

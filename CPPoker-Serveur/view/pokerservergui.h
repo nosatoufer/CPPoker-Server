@@ -2,13 +2,11 @@
 #define POKERSERVEURGUI_H
 
 #include <QMainWindow>
-#include "../controller/controller.h"
 #include "../controller/servercontroller.h"
 
 namespace Ui {
 class PokerServerGui;
 }
-class Controller;
 class ServerController;
 
 class PokerServerGui : public QMainWindow
@@ -16,16 +14,14 @@ class PokerServerGui : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit PokerServerGui(QWidget *parent = 0);
-    ~PokerServerGui();
+    explicit PokerServerGui(ServerController* servController, QWidget *parent = 0);
+    virtual ~PokerServerGui();
 
-    void attachController(Controller* controller);
-    void attachController(ServerController* controller);
+    virtual void log(QString log);
 
-private:
-    Ui::PokerServerGui *ui;
-    Controller* controller;
-    ServerController* serverController;
+protected:
+    ServerController* m_servController;
+    Ui::PokerServerGui* m_ui;
 
 private slots:
     void slotQuitter();

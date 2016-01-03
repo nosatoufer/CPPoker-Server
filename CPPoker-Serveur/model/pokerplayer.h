@@ -1,11 +1,18 @@
 #ifndef POKERPLAYER_H
 #define POKERPLAYER_H
 
-#include "cardplayer.h"
+#include <vector>
+#include <string>
 
-class PokerPlayer : public CardPlayer
+#include "card.h"
+#include "playerexception.h"
+
+class PokerPlayer
 {
 protected:
+    std::string nickname;
+    int cash;
+    std::vector<Card*> hand;
     unsigned int currentBet; // Mise du tour actuel
     unsigned int totalBet; // Montant misé depuis le début d'une partie
 
@@ -14,7 +21,15 @@ protected:
 
 public:
     PokerPlayer(std::string nickname, int cash=0);
-    PokerPlayer(Player* player);
+
+    int getCash();
+    void setCash(int cash);
+
+    std::string getNickname();
+    void setNickname(std::string nickname);
+
+    std::vector<Card*> getHand();
+    void addCard(Card* card);
 
     unsigned int bet(unsigned int amount);
     void resetCurrentBet();

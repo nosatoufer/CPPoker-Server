@@ -1,19 +1,26 @@
 #ifndef POKERGAME_H
 #define POKERGAME_H
 
-#include "game.h"
 #include "card.h"
 #include "gameexception.h"
 #include "deck.h"
 #include "pokerplayer.h"
+#include "gamestate.h"
 
-class PokerGame : public Game
+class PokerGame
 {
 protected:
     std::vector<Card*> tableCard;
 
     Deck deck;
+    std::vector<PokerPlayer*> players;
 
+    GameState gameState;
+
+    unsigned int currentPlayer;
+
+    unsigned int minPlayer;
+    unsigned int maxPlayer;
     unsigned int dealer; // Id du dealer
     unsigned int smallBlindValue; // Id small blind
     unsigned int bigBlindValue; // Id big blind
@@ -23,9 +30,24 @@ protected:
     unsigned int pot; // Contient le montant total mis en jeu
 
 public:
-    PokerGame(unsigned int smallBlindValue = 0, unsigned int bigBlindValue = 0, std::vector<Player*> players = std::vector<Player*>(), unsigned int dealer = 0, Room* room = nullptr);
+    PokerGame(unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlindValue = 0, unsigned int bigBlindValue = 0, std::vector<PokerPlayer*> players = std::vector<PokerPlayer*>(), unsigned int dealer = 0);
 
     virtual void startGame();
+
+    virtual void setCurrentPlayerId(unsigned int number);
+
+    virtual PokerPlayer* getCurrentPlayer();
+    virtual std::vector<PokerPlayer*> getPlayers();
+    virtual PokerPlayer* getPlayer(std::string nickname);
+    virtual unsigned int getCurrentPlayerId();
+    virtual std::string getCurrentPlayerNickname();
+
+    virtual bool readyToStart();
+
+
+    virtual GameState getGameState();
+    void cancelGame();
+    void addPlayer(PokerPlayer* player);
 
     // Méthodes d'accès
     std::vector<Card*> getTableCard();
@@ -43,6 +65,8 @@ public:
     virtual bool isRoundOver();
     unsigned int getNextPlayerId();
     void putBetsInPot();
+    unsigned int getMinPlayer();
+    unsigned int getMaxPlayer();
     unsigned int getSmallBlind();
     unsigned int getBigBlind();
 };

@@ -1,6 +1,6 @@
-#include "roommanager.h"
+#include "pokermanager.h"
 
-RoomManager::RoomManager(QString name, unsigned int minPlayer, unsigned int maxPlayer,
+PokerManager::PokerManager(QString name, unsigned int minPlayer, unsigned int maxPlayer,
                          unsigned int smallBlind, unsigned int bigBlind) :
     m_players(),
     m_name(name)
@@ -9,58 +9,36 @@ RoomManager::RoomManager(QString name, unsigned int minPlayer, unsigned int maxP
     m_mController = new PokerController(minPlayer, maxPlayer, smallBlind, bigBlind);
 }
 
-RoomManager::~RoomManager()
+PokerManager::~PokerManager()
 {
     for(ConnectionManager * player : m_players)
         delete player;
     delete m_mController;
 }
 
-void RoomManager::run()
-{
-    while(true)
-    {
-        /*
-        for(ConnectionManager* user : m_players)
-        {
-            //qDebug() << "Analyzing client requests";
-            if (user->hasRequests())
-            {
-                // qDebug() << "Has request";
-                this->manageRequest(user);
-            } else {
-                // qDebug() << "No request";
-            }
-        }
-        if (this->m_mController->readyToStart()) {
-            this->m_mController->startGame();
-        }
-    }
-    //m_mController.startGame();
-    */
-    }
-}
-
-
-void RoomManager::manageRequest(ConnectionManager *player)
+void PokerManager::manageRequest(ConnectionManager *player)
 {
     Request* req = player->getRequest();
     switch(req->getCommand())
     {
+    case GAME_START:
+        if (m_mController->readyToStart()) {
+            m_mController->startGame();
+            req->setStatus("STATUS_SUCCESS");
+
+            this->sendCardsToPlayers();
+
+        } else {
+            req->setStatus("STATUS_FAILLURE");
+        }
     case POKER_ALL_IN:
         if (m_mController->allIn(player->getNickname()))
             req->setStatus("STATUS_SUCCESS");
         else
             req->setStatus("STATUS_FAILLURE");
         break;
-    case POKER_CALL:
-        if (m_mController->call(player->getNickname()))
-            req->setStatus("STATUS_SUCCESS");
-        else
-            req->setStatus("STATUS_FAILLURE");
-        break;
-    case POKER_CHECK:
-        if ( m_mController->check(player->getNickname()))
+    case POKER_BET:
+        if (m_mController->bet(player->getNickname(), std::stoul(req->get("bet"))))
             req->setStatus("STATUS_SUCCESS");
         else
             req->setStatus("STATUS_FAILLURE");
@@ -89,23 +67,38 @@ void RoomManager::manageRequest(ConnectionManager *player)
     }
 }
 
-void RoomManager::sendToAll(Request *req)
+void PokerManager::sendCardsToPlayers()
+{
+    if (m_mController->isGameStarted()) {
+        for(ConnectionManager* p : m_players) {
+            Request req;
+            req.setCommand(POKER_GIVE_CARD);
+            std::pair<std::string, std::string> cards = m_mController->getPlayerCards(p->getNickname());
+            qDebug() << "sendCardsToPlayer";
+            req.set("cardOne", cards.first);
+            req.set("cardTwo", cards.second);
+            p->write(&req);
+        }
+    } else {
+        throw PokerManagerException("Erreur lors de l'appel à sendCardsToPlayers() : la partie n'est pas commencée.");
+    }
+}
+
+void PokerManager::sendToAll(Request *req)
 {
     for(ConnectionManager* p : m_players)
         p->write(req);
     delete req;
 }
 
-void RoomManager::addPlayer(ConnectionManager *player)
+void PokerManager::addPlayer(ConnectionManager *player)
 {
-    // IF m_mController.status() != STARTED
-
     Request * req = new Request();
     req->setCommand(PLAYER_JOINED);
     req->set("pName",player->getNickname());
     sendToAll(req);
     m_players.append(player);
-    player->addObserver(this);
+    player->serverToRoom(this);
     m_mController->addPlayer(player->getNickname());
 
     req = new Request();
@@ -123,14 +116,11 @@ void RoomManager::addPlayer(ConnectionManager *player)
     delete req;
 }
 
-bool RoomManager::remPlayer(ConnectionManager *player)
+bool PokerManager::remPlayer(ConnectionManager *player)
 {
     int i = m_players.indexOf(player);
     if (i != -1)
     {
-        if (m_mController->isPlayerInGame(player->getNickname())) {
-            m_mController->cancelGame();
-        }
         m_players.remove(i);
         Request * req = new Request();
         req->setCommand(PLAYER_LEFT);
@@ -142,17 +132,17 @@ bool RoomManager::remPlayer(ConnectionManager *player)
     return false;
 }
 
-QString RoomManager::name() const
+QString PokerManager::name() const
 {
     return m_name;
 }
 
-int RoomManager::nbPlayer() const
+int PokerManager::nbPlayer() const
 {
     return m_players.size();
 }
 
-bool RoomManager::isNicknameAvailable(std::string pName) const
+bool PokerManager::isNicknameAvailable(std::string pName) const
 {
     int i = 0;
     bool find = false;
@@ -163,7 +153,7 @@ bool RoomManager::isNicknameAvailable(std::string pName) const
     return !find;
 }
 
-QVector<std::string> RoomManager::playerName() const
+QVector<std::string> PokerManager::playerName() const
 {
     QVector<std::string> playersName;
     for(auto p : m_players)
@@ -171,24 +161,7 @@ QVector<std::string> RoomManager::playerName() const
     return playersName;
 }
 
-void RoomManager::update()
-{
-
-}
-
-void RoomManager::netUpdate()
-{
-    for(ConnectionManager * player : m_players)
-    {
-        if(player->hasRequests())
-        {
-            //readRequest(player, player->getRequest());
-        }
-    }
-
-}
-
-std::string RoomManager::toString()
+std::string PokerManager::toString()
 {
     std::map<std::string, std::string> map;
     map["name"] = this->m_name.toStdString();
@@ -200,7 +173,7 @@ std::string RoomManager::toString()
     return jsonEncode(map);
 }
 
-void RoomManager::clientDisconnected(ConnectionManager* cm) {
+void PokerManager::clientDisconnected(ConnectionManager* cm) {
     qDebug() << "clientDisconnected - delete";
     m_players.removeOne(cm);
 
@@ -211,7 +184,7 @@ void RoomManager::clientDisconnected(ConnectionManager* cm) {
     // TODO : Gérer la déconnexion depuis les tables
 }
 
-void RoomManager::readRequest(ConnectionManager *cm)
+void PokerManager::readRequest(ConnectionManager *cm)
 {
     if(cm->hasRequests())
     {

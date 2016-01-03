@@ -2,94 +2,89 @@
 
 PokerController::PokerController(unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind)
 {
-    model = new PokerRoom(minPlayer, maxPlayer, smallBlind, bigBlind);
-    //model->attachController(this);
+    game = new PokerGame(minPlayer, maxPlayer, smallBlind, bigBlind);
 }
 
 PokerController::~PokerController()
 {
-    delete model;
-}
-
-PokerController::PokerController(PokerRoom* room) :
-    model(room)
-{
-    //model->attachController(this);
+    delete game;
 }
 
 bool PokerController::allIn(std::string name)
 {
+    if (game->getCurrentPlayerNickname() == name)
+        game->allIn();
 
+    return (game->getCurrentPlayerNickname() == name);
 }
 
-bool PokerController::call(std::string name)
+bool PokerController::bet(std::string name, unsigned int value)
 {
+    if (game->getCurrentPlayerNickname() == name)
+        game->bet(value);
 
-}
-
-bool PokerController::check(std::string name)
-{
-
-}
-
-bool PokerController::raise(std::string name)
-{
-
+    return (game->getCurrentPlayerNickname() == name);
 }
 
 bool PokerController::fold(std::string name)
 {
+    if (game->getCurrentPlayerNickname() == name)
+        game->fold();
 
+    return (game->getCurrentPlayerNickname() == name);
 }
 
-bool PokerController::isPlayerInGame(std::string nickname)
-{
-    std::vector<Player*> players = this->model->getGame()->getPlayers();
-    for (Player* player : players) {
-        if (player->getNickname() == nickname)
-            return true;
-    }
-    return false;
+bool PokerController::isGameStarted() {
+    return (this->game->getGameState() == GameState::RUNNING);
+}
+
+std::pair<std::string, std::string> PokerController::getPlayerCards(std::string nickname) {
+    std::vector<Card*> cards = this->game->getPlayer(nickname)->getHand();
+    std::pair<std::string, std::string> playerHand;
+    playerHand.first = cards[0]->toString();
+    playerHand.second = cards[1]->toString();
+    return playerHand;
 }
 
 void PokerController::cancelGame()
 {
-    this->model->cancelGame();
+    this->game->cancelGame();
 }
 
 bool PokerController::addPlayer(std::string name)
 {
-    this->model->addPlayer(new PokerPlayer(name, 1000));
+    this->game->addPlayer(new PokerPlayer(name, 1000));
+    return true;
 }
 
 bool PokerController::readyToStart()
 {
-    return this->model->readyToStart();
+    return this->game->readyToStart();
 }
 
 void PokerController::startGame()
 {
-    this->model->startGame();
+    this->game->startGame();
 }
 
 unsigned int PokerController::getMinPlayer()
 {
-    return this->model->getMinPlayer();
+    return this->game->getMinPlayer();
 }
 
 unsigned int PokerController::getMaxPlayer()
 {
-    return this->model->getMaxPlayer();
+    return this->game->getMaxPlayer();
 }
 
 unsigned int PokerController::getSmallBlind()
 {
-    return this->model->getSmallBlind();
+    return this->game->getSmallBlind();
 }
 
 unsigned int PokerController::getBigBlind()
 {
-    return this->model->getBigBlind();
+    return this->game->getBigBlind();
 }
 
 void PokerController::update()

@@ -6,7 +6,7 @@
 class Card
 {
 public:
-    enum Rank {ACE, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, HEIGHT, NINE, TEN, JACK, QUEEN, KING};
+    enum Rank {ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, HEIGHT, NINE, TEN, JACK, QUEEN, KING};
     enum Suit {CLUBS, DIAMONDS, HEARTS, SPADES};
 
 protected:
@@ -19,6 +19,8 @@ public:
 
     Rank getRank() const;
     Suit getSuit() const;
+
+    std::string toString() const;
 };
 
 std::ostream& operator<<(std::ostream& os, Card card);

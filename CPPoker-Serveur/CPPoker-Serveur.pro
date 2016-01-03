@@ -17,49 +17,34 @@ TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp\
-    model/player.cpp \
     network/connectionmanager.cpp \
     network/servsocket.cpp \
     view/pokerservergui.cpp \
-    model/room.cpp \
-    model/pokerroom.cpp \
     model/pokergame.cpp \
-    model/game.cpp \
-    model/roomexception.cpp \
     model/deck.cpp \
     model/card.cpp \
     model/gameexception.cpp \
-    model/cardplayer.cpp \
     model/pokerplayer.cpp \
     model/playerexception.cpp \
     network/request.cpp \
     network/utils.cpp \
-    controller/controller.cpp \
-    pattern/observer.cpp \
-    pattern/subject.cpp \
     controller/servercontroller.cpp \
-    model/roommanager.cpp \
-    pattern/netobserver.cpp \
-    pattern/netsubject.cpp \
     network/servermanager.cpp \
-    model/roommanagerexception.cpp \
-    controller/pokercontroller.cpp
+    controller/pokercontroller.cpp \
+    model/pokermanagerexception.cpp \
+    model/pokermanager.cpp \
+    pattern/observer.cpp \
+    pattern/subject.cpp
 
 HEADERS += \
-    model/player.h \
     network/connectionmanager.h \
     network/servsocket.h \
     view/pokerservergui.h \
-    model/room.h \
-    model/pokerroom.h \
     model/card.h \
     model/pokergame.h \
-    model/game.h \
-    model/roomexception.h \
     model/deck.h \
     model/gameexception.h \
     model/gamestate.h \
-    model/cardplayer.h \
     model/pokerplayer.h \
     model/playerexception.h \
     network/request.h \
@@ -67,16 +52,13 @@ HEADERS += \
     network/commands.h \
     network/commands.h \
     network/utils.h \
-    controller/controller.h \
-    pattern/observer.h \
-    pattern/subject.h \
     controller/servercontroller.h \
-    model/roommanager.h \
-    pattern/netobserver.h \
-    pattern/netsubject.h \
     network/servermanager.h \
-    model/roommanagerexception.h \
-    controller/pokercontroller.h
+    controller/pokercontroller.h \
+    model/pokermanager.h \
+    model/pokermanagerexception.h \
+    pattern/observer.h \
+    pattern/subject.h
 
 FORMS += \
     view/pokerservergui.ui

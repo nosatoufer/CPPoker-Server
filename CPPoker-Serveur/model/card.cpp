@@ -15,34 +15,38 @@ Card::Suit Card::getSuit() const {
     return suit;
 }
 
+std::string Card::toString() const {
+    std::string value;
+    switch(this->getSuit())
+    {
+        case Card::CLUBS: value = "CLUBS"; break;
+        case Card::DIAMONDS: value = "DIAMONDS"; break;
+        case Card::HEARTS: value = "HEARTS"; break;
+        case Card::SPADES: value = "SPADES"; break;
+        default : value = "ERR"; break;
+    }
+    value += "/";
+    switch(this->getRank())
+    {
+        case Card::ACE: value +=  "ACE"; break;
+        case Card::TWO: value +=  "TWO"; break;
+        case Card::THREE: value +=  "THREE"; break;
+        case Card::FOUR: value +=  "FOUR"; break;
+        case Card::FIVE: value +=  "FIVE"; break;
+        case Card::SIX: value += "SIX"; break;
+        case Card::SEVEN: value += "SEVEN"; break;
+        case Card::HEIGHT: value += "HEIGHT"; break;
+        case Card::NINE: value += "NINE"; break;
+        case Card::TEN: value += "TEN"; break;
+        case Card::JACK: value += "JACK"; break;
+        case Card::QUEEN: value += "QUEEN"; break;
+        case Card::KING: value += "KING"; break;
+        default : value += "ERR"; break;
+    }
+}
+
 std::ostream& operator<<(std::ostream& os, Card card) {
-    switch(card.getRank())
-    {
-        case Card::ACE: os << "ACE"; break;
-        case Card::ONE: os << "ONE"; break;
-        case Card::TWO: os << "TWO"; break;
-        case Card::THREE: os << "THREE"; break;
-        case Card::FOUR: os << "FOUR"; break;
-        case Card::FIVE: os << "FIVE"; break;
-        case Card::SIX: os << "SIX"; break;
-        case Card::SEVEN: os << "SEVEN"; break;
-        case Card::HEIGHT: os << "HEIGHT"; break;
-        case Card::NINE: os << "NINE"; break;
-        case Card::TEN: os << "TEN"; break;
-        case Card::JACK: os << "JACK"; break;
-        case Card::QUEEN: os << "QUEEN"; break;
-        case Card::KING: os << "KING"; break;
-        default : os << "ERR"; break;
-    }
-    os << " OF ";
-    switch(card.getSuit())
-    {
-        case Card::CLUBS: os << "CLUBS"; break;
-        case Card::DIAMONDS: os << "DIAMONDS"; break;
-        case Card::HEARTS: os << "HEARTS"; break;
-        case Card::SPADES: os << "SPADES"; break;
-        default : os << "ERR"; break;
-    }
+    os << card.toString();
     return os;
 }
 

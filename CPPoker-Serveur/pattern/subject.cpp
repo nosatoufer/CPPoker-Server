@@ -22,4 +22,3 @@ void Subject::notify()
         obs->update();
     }
 }
-

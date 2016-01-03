@@ -6,9 +6,7 @@
 #include <QDebug>
 #include <QMap>
 
-#include "../model/player.h"
 #include "connectionmanager.h"
-#include "controller/controller.h"
 #include "servermanager.h"
 
 
@@ -24,11 +22,12 @@ class ServSocket : public QObject
     Q_OBJECT
 private:
     QTcpServer* m_serv;
-    ServerManager * m_servManager;
+    ServerManager* m_servManager;
+    ServerController* m_servController;
 
 public:
-    explicit ServSocket(QObject *parent = 0);
-    ~ServSocket();
+    explicit ServSocket(ServerController* servController, QObject *parent = 0);
+    virtual ~ServSocket();
 
 public slots:
     void newConnection();
