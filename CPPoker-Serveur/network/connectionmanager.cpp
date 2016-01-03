@@ -3,7 +3,6 @@
 
 ConnectionManager::ConnectionManager(QTcpSocket *newClient, ServerManager* sm) :
     m_sock(newClient),
-    mutex(),
     m_requests(),
     nickname("guest")
 {
@@ -11,7 +10,8 @@ ConnectionManager::ConnectionManager(QTcpSocket *newClient, ServerManager* sm) :
     connect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
     connect(m_sock, SIGNAL(readyRead()), this, SLOT(read()));
     connect(this, SIGNAL(clientDisconnected(ConnectionManager*)), sm, SLOT(clientDisconnected(ConnectionManager*)));
-
+    connect(this, SIGNAL(newRequest(ConnectionManager*)), sm, SLOT(readRequest(ConnectionManager*)));
+    qDebug() << "Client connect connected";
     Request * req = new Request();
     req->setCommand(LOGIN);
     this->write(req);
@@ -20,12 +20,16 @@ ConnectionManager::ConnectionManager(QTcpSocket *newClient, ServerManager* sm) :
 
 ConnectionManager::~ConnectionManager()
 {
-    disconnect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    disconnect(m_sock, SIGNAL(readyRead()), this, SLOT(read()));
-    m_sock->close();
+    qDebug() << "~ConnectionManager()";
+    this->disconnect();
+    //disconnect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    //disconnect(m_sock, SIGNAL(readyRead()), this, SLOT(read()));
+    //m_sock->readAll();
+    //m_sock->close();
     delete m_sock;
     for(Request * req : m_requests)
         delete req;
+    qDebug() << "~ConnectionManager 2";
 
 }
 
@@ -35,6 +39,7 @@ void ConnectionManager::read()
     QString req(m_sock->readAll());
     qDebug() << "Request received : " << req;
     m_requests.insert(m_requests.begin(), new Request(req.toStdString()));
+    emit newRequest(this);
     //mutex.unlock();
 }
 
@@ -46,7 +51,7 @@ void ConnectionManager::disconnected()
 
 void ConnectionManager::write(Request * req)
 {
-    if(m_sock->isWritable())
+    if(m_sock->isOpen() && m_sock->isWritable())
     {
         std::string s = req->toString();
         qDebug() << "SEND : " << QString::fromStdString(s);
@@ -62,6 +67,7 @@ void ConnectionManager::setNickName(std::string name)
 
 std::string ConnectionManager::getNickname()
 {
+    qDebug() << "getNickname()";
     return this->nickname;
 }
 
@@ -79,10 +85,15 @@ bool ConnectionManager::hasRequests()
 Request * ConnectionManager::getRequest()
 {
     //mutex.lock();
-    //qDebug() << "Entering getRequests";
+    qDebug() << "Entering getRequests";
     Request * req = m_requests.back();
     m_requests.pop_back();
     //qDebug() << "Exiting getRequests";
     //mutex.unlock();
     return req;
+}
+
+void ConnectionManager::close()
+{
+    m_sock->close();
 }

@@ -5,6 +5,7 @@ ServerManager::ServerManager() :
     m_users(),
     m_rooms()
 {
+    m_disc = nullptr;
     m_logs = "Démarrage du ServerManager \n";
     qDebug() << "Démarrage du ServerManager";
 }
@@ -15,13 +16,15 @@ ServerManager::~ServerManager()
         delete room;
     for(ConnectionManager * user : m_users)
         delete user;
+    if(m_disc != nullptr)
+        delete m_disc;
 }
 
 void ServerManager::addUser(ConnectionManager *user)
 {
     m_logs += "User has joined the server \n";
     // qDebug() << "User joining the server";
-    m_users.push_back(user);
+    m_users.append(user);
     qDebug() << "User has joined the server";
 }
 
@@ -29,21 +32,31 @@ void ServerManager::run()
 {
     while(true)
     {
-        for(ConnectionManager* user : m_users)
-        {
-            //qDebug() << "Analyzing client requests";
-            if (user->hasRequests())
+        /*
+        try{
+            for(ConnectionManager* user : m_users)
             {
-                // qDebug() << "Has request";
-                this->manageRequest(user);
-            } else {
-                // qDebug() << "No request";
+
+                //qDebug() << "Analyzing client requests";
+                if (user->hasRequests())
+                {
+                    qDebug() << "Has request";
+                    this->manageRequest(user);
+                } else {
+                    // qDebug() << "No request";
+                }
             }
+
         }
+        catch(...)
+        {
+            qDebug() << "Exception catched";
+        }
+    */
     }
 }
 
-void ServerManager::manageRequest(ConnectionManager *user)
+void ServerManager::manageRequest(ConnectionManager *user) throw()
 {
     qDebug() << "Managing request";
     Request* req = user->getRequest();
@@ -161,18 +174,21 @@ bool ServerManager::isNicknameAvailable(std::string name)
 }
 
 void ServerManager::clientDisconnected(ConnectionManager* cm) {
-    int i = -1;
-    bool find = false;
-    do
-    {
-        ++i;
-        find = (m_users.at(i) == cm);
-    } while(!find && i < m_users.size()-1);
-    if (find) {
-        m_users.remove(i);
-        delete cm;
-    }
+    qDebug() << "clientDisconnected - delete";
+    m_users.removeOne(cm);
 
+    if(m_disc != nullptr)
+        delete m_disc;
+    m_disc = cm;
+    m_disc->close();
     // TODO : Gérer la déconnexion depuis les tables
+}
+
+void ServerManager::readRequest(ConnectionManager *cm)
+{
+    if(cm->hasRequests())
+    {
+        this->manageRequest(cm);
+    }
 }
 

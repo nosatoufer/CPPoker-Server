@@ -15,6 +15,7 @@ class ServerManager : public QThread
     Q_OBJECT
 protected:
     QVector<ConnectionManager*> m_users;
+    ConnectionManager* m_disc;
     QVector<RoomManager*> m_rooms;
     QString m_logs;
 
@@ -29,7 +30,7 @@ protected:
      * @brief manageRequest reads the request command and dispatch to the appropriate function
      * @param user the user who sent the request
      */
-    virtual void manageRequest(ConnectionManager* user);
+    virtual void manageRequest(ConnectionManager* user) throw();
 
     /**
      * @brief roomList returns a list containing the rooms name
@@ -68,6 +69,7 @@ protected:
 
 public slots:
     void clientDisconnected(ConnectionManager* cm);
+    void readRequest(ConnectionManager* cm);
 };
 
 #endif // SERVERMANAGER_H

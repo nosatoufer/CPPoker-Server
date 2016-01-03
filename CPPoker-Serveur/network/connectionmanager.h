@@ -59,12 +59,15 @@ public:
      */
     Request *getRequest();
 
+    void close();
+
 public slots:
     void read();
     void disconnected();
 
 signals:
     void clientDisconnected(ConnectionManager* cm);
+    void newRequest(ConnectionManager* cm);
 };
 
 #endif // CONNECTIONMANAGER_H

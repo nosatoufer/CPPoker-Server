@@ -1,8 +1,9 @@
 #include "roommanager.h"
 
-RoomManager::RoomManager(QString name, unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind) :
-    m_name(name),
-    m_players()
+RoomManager::RoomManager(QString name, unsigned int minPlayer, unsigned int maxPlayer,
+                         unsigned int smallBlind, unsigned int bigBlind) :
+    m_players(),
+    m_name(name)
 {
     m_mController = new PokerController(minPlayer, maxPlayer, smallBlind, bigBlind);
 }
