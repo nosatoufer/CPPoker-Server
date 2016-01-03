@@ -11,7 +11,8 @@ void Subject::addObserver(Observer *obs)
 
 void Subject::remObserver(Observer *obs)
 {
-    m_observers.removeOne(obs);
+    int i = m_observers.indexOf(obs);
+    m_observers.remove(i);
 }
 
 void Subject::notify()

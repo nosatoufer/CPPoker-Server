@@ -7,6 +7,8 @@
 QT += core gui
 QT += network
 
+QT_VERSION = 5
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = CPPoker-Serveur
@@ -35,12 +37,13 @@ SOURCES += main.cpp\
     controller/controller.cpp \
     pattern/observer.cpp \
     pattern/subject.cpp \
-    controller/modelcontroller.cpp \
     controller/servercontroller.cpp \
     model/roommanager.cpp \
     pattern/netobserver.cpp \
     pattern/netsubject.cpp \
-    network/servermanager.cpp
+    network/servermanager.cpp \
+    model/roommanagerexception.cpp \
+    controller/pokercontroller.cpp
 
 HEADERS += \
     model/player.h \
@@ -67,12 +70,13 @@ HEADERS += \
     controller/controller.h \
     pattern/observer.h \
     pattern/subject.h \
-    controller/modelcontroller.h \
     controller/servercontroller.h \
     model/roommanager.h \
     pattern/netobserver.h \
     pattern/netsubject.h \
-    network/servermanager.h
+    network/servermanager.h \
+    model/roommanagerexception.h \
+    controller/pokercontroller.h
 
 FORMS += \
     view/pokerservergui.ui

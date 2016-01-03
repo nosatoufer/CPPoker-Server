@@ -15,6 +15,30 @@ bool Room::checkNumberOfPlayer() {
     return (players.size() <= maxPlayer && players.size() >= minPlayer);
 }
 
-void Room::attachController(ModelController* controller) {
+/*void Room::attachController(ModelController* controller) {
     this->controller = controller;
+}*/
+
+unsigned int Room::getMinPlayer() {
+    return this->minPlayer;
+}
+
+unsigned int Room::getMaxPlayer() {
+    return this->maxPlayer;
+}
+
+bool Room::readyToStart() {
+    if (game->getGameState() == GameState::WAITING || game->getGameState() == GameState::OVER) {
+        return (this->players.size() <= maxPlayer && this->players.size() >= minPlayer);
+    } else {
+        return false;
+    }
+}
+
+Game* Room::getGame() {
+    return this->game;
+}
+
+void Room::cancelGame() {
+    this->game->cancelGame();
 }

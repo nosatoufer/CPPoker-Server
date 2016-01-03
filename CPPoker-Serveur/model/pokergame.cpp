@@ -281,3 +281,11 @@ void PokerGame::putBetsInPot() {
         static_cast<PokerPlayer*>(this->players[i])->resetCurrentBet();
     }
 }
+
+unsigned int PokerGame::getSmallBlind() {
+    return this->smallBlindValue;
+}
+
+unsigned int PokerGame::getBigBlind() {
+    return this->bigBlindValue;
+}

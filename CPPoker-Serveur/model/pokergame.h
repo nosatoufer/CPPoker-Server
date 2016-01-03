@@ -43,6 +43,8 @@ public:
     virtual bool isRoundOver();
     unsigned int getNextPlayerId();
     void putBetsInPot();
+    unsigned int getSmallBlind();
+    unsigned int getBigBlind();
 };
 
 #endif // POKERGAME_H

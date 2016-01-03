@@ -15,10 +15,6 @@ void Game::nextPlayer() {
     this->currentPlayer %= players.size();
 }
 
-void Game::addPlayer(Player* player) {
-    this->players.push_back(player);
-}
-
 void Game::setCurrentPlayerId(unsigned int number) {
     if (number >= players.size()) {
         throw GameException("Le numéro de joueur est supérieur au nombre de joueur.");

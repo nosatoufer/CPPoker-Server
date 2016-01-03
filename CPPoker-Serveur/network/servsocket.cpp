@@ -4,16 +4,18 @@
 ServSocket::ServSocket(QObject *parent) :
     QObject(parent)
 {
-    m_servManager = new ServerManager();
     m_serv = new QTcpServer();
 
     connect(m_serv, SIGNAL(newConnection()), this, SLOT(newConnection()));
 
-    if(m_serv->listen(QHostAddress::Any, 1234))
+    if(m_serv->listen(QHostAddress::Any, 1234)) {
         qDebug() << "Server started";
-    else
-        qDebug() << "Server could not start";
 
+        m_servManager = new ServerManager();
+        m_servManager->start();
+    } else {
+        qDebug() << "Server could not start";
+    }
 }
 
 ServSocket::~ServSocket()
@@ -24,5 +26,6 @@ ServSocket::~ServSocket()
 
 void ServSocket::newConnection()
 {
-    m_servManager->addUser(new ConnectionManager(m_serv->nextPendingConnection()));//, this));
+    ConnectionManager* cm = new ConnectionManager(m_serv->nextPendingConnection(),m_servManager);
+    m_servManager->addUser(cm);//, this));
 }
