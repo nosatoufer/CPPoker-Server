@@ -97,3 +97,14 @@ void ConnectionManager::close()
 {
     m_sock->close();
 }
+
+void ConnectionManager::serverToRoom(RoomManager *room)
+{
+
+    disconnect(this, SIGNAL(clientDisconnected(ConnectionManager*)));
+    disconnect(this, SIGNAL(newRequest(ConnectionManager*)));
+
+
+    connect(this, SIGNAL(clientDisconnected(ConnectionManager*)), room, SLOT(clientDisconnected(ConnectionManager*)));
+    connect(this, SIGNAL(newRequest(ConnectionManager*)), room, SLOT(readRequest(ConnectionManager*)));
+}

@@ -9,6 +9,7 @@
 
 class ConnectionManager;
 class RoomManager;
+class Request;
 
 class ServerManager : public QThread
 {
@@ -66,6 +67,8 @@ protected:
      * @return true if the player exists.
      */
     virtual bool isNicknameAvailable(std::string name);
+
+    void sendRoomList(ConnectionManager* user, Request* req);
 
 public slots:
     void clientDisconnected(ConnectionManager* cm);

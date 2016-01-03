@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../model/player.h"
+#include "../model/roommanager.h"
 #include "../network/servsocket.h"
 #include "../pattern/netsubject.h"
 #include "request.h"
@@ -64,6 +65,7 @@ public:
      */
     void close();
 
+    void serverToRoom(RoomManager* room);
 public slots:
     void read();
     void disconnected();

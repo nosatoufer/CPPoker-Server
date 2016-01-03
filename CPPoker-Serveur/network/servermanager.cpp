@@ -78,9 +78,7 @@ void ServerManager::manageRequest(ConnectionManager *user) throw()
         }
         break;
     case ROOM_LIST:
-        req->setMap("rooms", this->roomList());
-        req->setStatus(Request::STATUS_SUCCESS);
-        user->write(req);
+        this->sendRoomList(user, req);
         break;
 
     case ROOM_CREATE:
@@ -88,12 +86,13 @@ void ServerManager::manageRequest(ConnectionManager *user) throw()
                       std::stoul(req->get("minPlayer")),
                       std::stoul(req->get("maxPlayer")),
                       std::stoul(req->get("smallBlind")),
-                      std::stoul(req->get("bigBlind")))) {
-            req->setStatus(Request::STATUS_SUCCESS);
+                      std::stoul(req->get("bigBlind"))))
+        {
+            this->sendRoomList(user, req);
         } else {
             req->setStatus(Request::STATUS_FAILURE);
+            user->write(req);
         }
-        user->write(req);
         break;
 
     case ROOM_JOIN:
@@ -120,6 +119,7 @@ std::map<std::string, std::string> ServerManager::roomList() {
     for(RoomManager * room : m_rooms)
     {
         map["room"+std::to_string(i)] = room->toString();
+        ++i;
     }
     return map;
 }
@@ -137,7 +137,7 @@ bool ServerManager::createRoom(std::string name, unsigned int minPlayer, unsigne
 bool ServerManager::checkRoomName(std::string name)
 {
     int i = 0;
-    while( i < m_rooms.size() && m_rooms.at(i)->name().toStdString() != name);
+    while( i < m_rooms.size() && m_rooms.at(i++)->name().toStdString() != name);
     return i < m_rooms.size();
 }
 
@@ -171,6 +171,14 @@ bool ServerManager::isNicknameAvailable(std::string name)
         ++i;
     }
     return !find;
+}
+
+void ServerManager::sendRoomList(ConnectionManager* user, Request *req)
+{
+    req->setCommand(ROOM_LIST);
+    req->setMap("rooms", this->roomList());
+    req->setStatus(Request::STATUS_SUCCESS);
+    user->write(req);
 }
 
 void ServerManager::clientDisconnected(ConnectionManager* cm) {

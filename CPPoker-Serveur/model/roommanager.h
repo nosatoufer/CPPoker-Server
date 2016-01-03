@@ -21,6 +21,7 @@ class RoomManager : public QThread, public Observer, public NetObserver
 private:
     PokerController * m_mController;
     QVector<ConnectionManager *> m_players;
+    ConnectionManager* m_disc;
     QString m_name;
 
 public:
@@ -38,6 +39,10 @@ public:
 
     void update();
     void netUpdate();
+
+public slots:
+    void readRequest(ConnectionManager *cm);
+    void clientDisconnected(ConnectionManager *cm);
 
 private:
     void run();

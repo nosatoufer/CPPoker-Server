@@ -5,6 +5,7 @@ RoomManager::RoomManager(QString name, unsigned int minPlayer, unsigned int maxP
     m_players(),
     m_name(name)
 {
+    m_disc = nullptr;
     m_mController = new PokerController(minPlayer, maxPlayer, smallBlind, bigBlind);
 }
 
@@ -19,6 +20,7 @@ void RoomManager::run()
 {
     while(true)
     {
+        /*
         for(ConnectionManager* user : m_players)
         {
             //qDebug() << "Analyzing client requests";
@@ -35,7 +37,10 @@ void RoomManager::run()
         }
     }
     //m_mController.startGame();
+    */
+    }
 }
+
 
 void RoomManager::manageRequest(ConnectionManager *player)
 {
@@ -97,20 +102,25 @@ void RoomManager::addPlayer(ConnectionManager *player)
 
     Request * req = new Request();
     req->setCommand(PLAYER_JOINED);
-    req->setMessage(player->getNickname());
+    req->set("pName",player->getNickname());
     sendToAll(req);
     m_players.append(player);
     player->addObserver(this);
     m_mController->addPlayer(player->getNickname());
+
     req = new Request();
     req->setCommand(PLAYER_JOINED);
+    qDebug() << m_players.size();
     for(ConnectionManager * p : m_players)
     {
-        req->setMessage(p->getNickname());
+        qDebug() << QString::fromStdString(player->getNickname());
+        qDebug() << QString::fromStdString(p->getNickname());
+        req->set("pName",p->getNickname());
+        qDebug() << "Coucou";
         player->write(req);
+        qDebug() << "Coucou";
     }
     delete req;
-
 }
 
 bool RoomManager::remPlayer(ConnectionManager *player)
@@ -190,4 +200,22 @@ std::string RoomManager::toString()
     return jsonEncode(map);
 }
 
+void RoomManager::clientDisconnected(ConnectionManager* cm) {
+    qDebug() << "clientDisconnected - delete";
+    m_players.removeOne(cm);
+
+    if(m_disc != nullptr)
+        delete m_disc;
+    m_disc = cm;
+    m_disc->close();
+    // TODO : Gérer la déconnexion depuis les tables
+}
+
+void RoomManager::readRequest(ConnectionManager *cm)
+{
+    if(cm->hasRequests())
+    {
+        this->manageRequest(cm);
+    }
+}
 
