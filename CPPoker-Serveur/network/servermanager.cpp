@@ -65,9 +65,9 @@ void ServerManager::manageRequest(ConnectionManager *user) throw()
     // qDebug() << "Treating request ...";
     case LOGIN:
         qDebug() << "Login Request";
-        if (isNicknameAvailable(req->getMessage()))
+        if (isNicknameAvailable(req->get("pName")))
         {
-            user->setNickName(req->getMessage());
+            user->setNickName(req->get("pName"));
             req->setStatus(Request::STATUS_SUCCESS);
             user->write(req);
         }
@@ -97,7 +97,7 @@ void ServerManager::manageRequest(ConnectionManager *user) throw()
         break;
 
     case ROOM_JOIN:
-        if(joinRoom(user, req->getMessage())) {
+        if(joinRoom(user, req->get("rName"))) {
             req->setStatus(Request::STATUS_SUCCESS);
         } else {
             req->setStatus(Request::STATUS_FAILURE);

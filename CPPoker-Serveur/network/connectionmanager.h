@@ -59,6 +59,9 @@ public:
      */
     Request *getRequest();
 
+    /**
+     * @brief close closes the socket
+     */
     void close();
 
 public slots:
