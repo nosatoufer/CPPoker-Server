@@ -3,7 +3,6 @@
 PokerController::PokerController(unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind)
 {
     m_game = new PokerGame(minPlayer, maxPlayer, smallBlind, bigBlind);
-    this->m_game->addObserver(this);
 }
 
 PokerController::~PokerController()
@@ -105,7 +104,3 @@ std::string PokerController::getCurrentPlayerNickname()
     return this->m_game->getCurrentPlayerNickname();
 }
 
-void PokerController::update()
-{
-
-}

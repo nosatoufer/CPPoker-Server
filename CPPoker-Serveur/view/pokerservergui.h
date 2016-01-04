@@ -24,7 +24,14 @@ protected:
     Ui::PokerServerGui* m_ui;
 
 private slots:
+    /**
+     * @brief slotQuitter closes the application
+     */
     void slotQuitter();
+
+    /**
+     * @brief slotExecuter TODO : tries to execute a command on the server
+     */
     void slotExecuter();
 };
 

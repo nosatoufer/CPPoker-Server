@@ -24,6 +24,11 @@ protected:
 public:
     ServerManager(ServerController* servController);
     virtual ~ServerManager();
+
+    /**
+     * @brief addUser adds an user to the list of user awaiting to join a room
+     * @param user the user to add
+     */
     virtual void addUser(ConnectionManager* user);
 
 protected:

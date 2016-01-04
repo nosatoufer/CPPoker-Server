@@ -4,7 +4,7 @@
 #include <iostream>
 
 /**
- * @brief The Card class represent a card
+ * @brief The Card class represents a card
  */
 class Card
 {

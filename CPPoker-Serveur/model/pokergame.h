@@ -11,7 +11,7 @@
 /**
  * @brief The PokerGame class represent a Texas hold'em poker game with small blind et big blind
  */
-class PokerGame : public Subject
+class PokerGame
 {
 protected:
     std::vector<PokerPlayer*> m_players;
