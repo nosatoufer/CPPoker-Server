@@ -10,10 +10,10 @@
 class GameException : public std::exception
 {
 private:
-    std::string phrase;
+    std::string m_phrase;
 
 public:
-    GameException(std::string const& phrase) throw();
+    GameException(std::string const& m_phrase) throw();
     virtual ~GameException() throw();
 
     /**

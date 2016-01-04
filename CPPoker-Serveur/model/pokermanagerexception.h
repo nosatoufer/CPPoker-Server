@@ -10,10 +10,10 @@
 class PokerManagerException : public std::exception
 {
 private:
-    std::string phrase;
+    std::string m_phrase;
 
 public:
-    PokerManagerException(std::string const& phrase) throw();
+    PokerManagerException(std::string const& m_phrase) throw();
     virtual ~PokerManagerException() throw();
 
     /**

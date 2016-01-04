@@ -9,7 +9,7 @@
 class PokerController : public Observer
 {
 protected:
-    PokerGame* game;
+    PokerGame* m_game;
 
 public:
     PokerController(unsigned int minPlayer, unsigned int maxPlayer, unsigned int smallBlind, unsigned int bigBlind);

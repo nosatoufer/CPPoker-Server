@@ -4,7 +4,7 @@
 ConnectionManager::ConnectionManager(QTcpSocket *newClient, ServerManager* sm) :
     m_sock(newClient),
     m_requests(),
-    nickname("guest")
+    m_nickname("guest")
 {
     qDebug() << "Client connecting";
     connect(m_sock, SIGNAL(disconnected()), this, SLOT(disconnected()));
@@ -54,20 +54,20 @@ void ConnectionManager::write(Request * req)
     {
         std::string s = req->toString();
         s+="|";
-        qDebug() << "SEND " << QString::fromStdString(nickname) << " : " << QString::fromStdString(s);
+        qDebug() << "SEND " << QString::fromStdString(m_nickname) << " : " << QString::fromStdString(s);
         m_sock->write(s.c_str(), s.length());
     }
 }
 
 void ConnectionManager::setNickName(std::string name)
 {
-    this->nickname = name;
+    this->m_nickname = name;
 }
 
 std::string ConnectionManager::getNickname()
 {
     qDebug() << "getNickname()";
-    return this->nickname;
+    return this->m_nickname;
 }
 
 bool ConnectionManager::hasRequests()

@@ -10,10 +10,10 @@
 class PlayerException : public std::exception
 {
 private:
-    std::string phrase;
+    std::string m_phrase;
 
 public:
-    PlayerException(std::string const& phrase) throw();
+    PlayerException(std::string const& m_phrase) throw();
     virtual ~PlayerException() throw();
 
     /**

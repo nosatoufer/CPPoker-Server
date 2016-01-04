@@ -12,7 +12,7 @@
 class Deck
 {
 protected:
-    std::vector<Card*> cards;
+    std::vector<Card*> m_cards;
 
 public:
     Deck();

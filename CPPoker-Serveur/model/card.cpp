@@ -3,16 +3,16 @@
 Card::Card() {}
 
 Card::Card(Rank rank, Suit suit) :
-    rank(rank),
-    suit(suit)
+    m_rank(rank),
+    m_suit(suit)
 {}
 
 Card::Rank Card::getRank() const {
-    return rank;
+    return m_rank;
 }
 
 Card::Suit Card::getSuit() const {
-    return suit;
+    return m_suit;
 }
 
 std::string Card::toString() const {

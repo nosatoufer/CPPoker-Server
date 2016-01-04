@@ -22,7 +22,7 @@ class ConnectionManager : public QObject
 private:
     QTcpSocket *m_sock;
     QVector<Request *> m_requests;
-    std::string nickname;
+    std::string m_nickname;
 
 public:
     ConnectionManager(QTcpSocket* newClient, ServerManager* sm);

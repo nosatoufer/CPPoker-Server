@@ -13,8 +13,8 @@ public:
     enum Suit {CLUBS, DIAMONDS, HEARTS, SPADES};
 
 protected:
-    Rank rank;
-    Suit suit;
+    Rank m_rank;
+    Suit m_suit;
 
 public:
     Card();
